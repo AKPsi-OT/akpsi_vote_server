@@ -5,15 +5,20 @@ monkey.patch_all()
 import time
 from threading import Thread
 from flask import Flask, render_template, session, request
-from flask.ext.socketio import SocketIO, emit, join_room, leave_room, \
-    close_room, disconnect
+from flask.ext.socketio import SocketIO, emit, disconnect
+from flask.ext.cas import CAS, login, logout, login_required
 
 app = Flask(__name__)
+cas = CAS(app)
+
 app.debug = True
 app.config['SECRET_KEY'] = 'secret!'
+app.config['CAS_SERVER'] = 'https://login.umd.edu'
+app.config['CAS_LOGIN_ROUTE'] = '/cas/login'
+app.config['CAS_AFTER_LOGIN'] = 'index'
+
 socketio = SocketIO(app)
 thread = None
-
 
 def background_thread():
     """Example of how to send server generated events to clients."""
@@ -25,14 +30,14 @@ def background_thread():
                       {'data': 'Server generated event', 'count': count},
                       namespace='/vote')
 
-
 @app.route('/')
+@login_required
 def index():
     global thread
     if thread is None:
         thread = Thread(target=background_thread)
         thread.start()
-    return render_template('index.html')
+    return render_template('index.html', username = cas.username)
 
 
 @socketio.on('my event', namespace='/vote')
@@ -41,48 +46,12 @@ def test_message(message):
     emit('my response',
          {'data': message['data'], 'count': session['receive_count']})
 
-
 @socketio.on('my broadcast event', namespace='/vote')
 def test_broadcast_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
          {'data': message['data'], 'count': session['receive_count']},
          broadcast=True)
-
-
-@socketio.on('join', namespace='/vote')
-def join(message):
-    join_room(message['room'])
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': 'In rooms: ' + ', '.join(request.namespace.rooms),
-          'count': session['receive_count']})
-
-
-@socketio.on('leave', namespace='/vote')
-def leave(message):
-    leave_room(message['room'])
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': 'In rooms: ' + ', '.join(request.namespace.rooms),
-          'count': session['receive_count']})
-
-
-@socketio.on('close room', namespace='/vote')
-def close(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response', {'data': 'Room ' + message['room'] + ' is closing.',
-                         'count': session['receive_count']},
-         room=message['room'])
-    close_room(message['room'])
-
-
-@socketio.on('my room event', namespace='/vote')
-def send_room_message(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': message['data'], 'count': session['receive_count']},
-         room=message['room'])
 
 
 @socketio.on('disconnect request', namespace='/vote')

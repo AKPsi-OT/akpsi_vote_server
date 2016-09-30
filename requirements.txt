@@ -1,3 +1,4 @@
 Flask
 Flask-SocketIO
+Flask-CAS
 gevent==1.1b4
