@@ -1,4 +1,4 @@
 Flask
 Flask-SocketIO
-Flask-CAS
+git+https://github.com/cameronbwhite/Flask-CAS@v1.0.1#egg=Flask-CAS==1.0.1
 gevent==1.1b4
