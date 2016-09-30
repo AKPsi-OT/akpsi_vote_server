@@ -26,17 +26,17 @@ def background_thread():
     while True:
         time.sleep(10)
         count += 1
-        socketio.emit('my response',
-                      {'data': 'Server generated event', 'count': count},
-                      namespace='/vote')
+        # socketio.emit('my response',
+        #               {'data': 'Server generated event', 'count': count},
+        #               namespace='/vote')
 
 @app.route('/')
 @login_required
 def index():
-    global thread
-    if thread is None:
-        thread = Thread(target=background_thread)
-        thread.start()
+    # global thread
+    # if thread is None:
+    #     thread = Thread(target=background_thread)
+    #     thread.start()
     return render_template('index.html', username = cas.username)
 
 
