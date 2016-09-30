@@ -9,6 +9,8 @@ from flask.ext.socketio import SocketIO, emit, disconnect
 from flask.ext.cas import CAS, login, logout, login_required
 
 app = Flask(__name__)
+
+socketio = SocketIO(app)
 cas = CAS(app)
 
 app.debug = True
@@ -17,7 +19,8 @@ app.config['CAS_SERVER'] = 'https://login.umd.edu'
 app.config['CAS_LOGIN_ROUTE'] = '/cas/login'
 app.config['CAS_AFTER_LOGIN'] = 'index'
 
-socketio = SocketIO(app)
+admin = 'cgonza1'
+clients = set()
 thread = None
 
 def background_thread():
@@ -37,7 +40,11 @@ def index():
     # if thread is None:
     #     thread = Thread(target=background_thread)
     #     thread.start()
-    return render_template('index.html', username = cas.username)
+    if cas.username != admin and cas.username in clients:
+    	return render_template('error.html', error="duplicate")
+    else:
+    	clients.add(cas.username)
+    	return render_template('index.html', username = cas.username)
 
 
 @socketio.on('my event', namespace='/vote')
