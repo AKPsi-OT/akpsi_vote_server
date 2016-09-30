@@ -3,10 +3,37 @@
 <head>
     <title>Flask-SocketIO Test</title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/static/spin.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         var username = '{{ username }}';
         $(document).ready(function(){
+            var opts = {
+              lines: 13 // The number of lines to draw
+            , length: 26 // The length of each line
+            , width: 12 // The line thickness
+            , radius: 42 // The radius of the inner circle
+            , scale: 0.75 // Scales overall size of the spinner
+            , corners: 0 // Corner roundness (0..1)
+            , color: '#000' // #rgb or #rrggbb or array of colors
+            , opacity: 0.35 // Opacity of the lines
+            , rotate: 0 // The rotation offset
+            , direction: 1 // 1: clockwise, -1: counterclockwise
+            , speed: 0.8 // Rounds per second
+            , trail: 60 // Afterglow percentage
+            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+            , zIndex: 2e9 // The z-index (defaults to 2000000000)
+            , className: 'spinner' // The CSS class to assign to the spinner
+            , top: '50%' // Top position relative to parent
+            , left: '50%' // Left position relative to parent
+            , shadow: false // Whether to render a shadow
+            , hwaccel: false // Whether to use hardware acceleration
+            , position: 'absolute' // Element positioning
+            }
+
+            var target = document.getElementById('log')
+            var spinner = new Spinner(opts).spin(target);
+
             namespace = '/vote'; // change to an empty string to use the global namespace
 
             // the socket.io documentation recommends sending an explicit package upon connection
@@ -28,34 +55,7 @@
 
             // handlers for the different forms in the page
             // these send data to the server in a variety of ways
-            $('form#emit').submit(function(event) {
-                socket.emit('my event', {data: $('#emit_data').val()});
-                return false;
-            });
-            $('form#broadcast').submit(function(event) {
-                socket.emit('my broadcast event', {data: $('#broadcast_data').val()});
-                return false;
-            });
-            $('form#join').submit(function(event) {
-                socket.emit('join', {room: $('#join_room').val()});
-                return false;
-            });
-            $('form#leave').submit(function(event) {
-                socket.emit('leave', {room: $('#leave_room').val()});
-                return false;
-            });
-            $('form#send_room').submit(function(event) {
-                socket.emit('my room event', {room: $('#room_name').val(), data: $('#room_data').val()});
-                return false;
-            });
-            $('form#close').submit(function(event) {
-                socket.emit('close room', {room: $('#close_room').val()});
-                return false;
-            });
-            $('form#disconnect').submit(function(event) {
-                socket.emit('disconnect request');
-                return false;
-            });
+
         });
     </script>
 </head>
@@ -69,23 +69,6 @@
     <form id="broadcast" method="POST" action='#'>
         <input type="text" name="broadcast_data" id="broadcast_data" placeholder="Message">
         <input type="submit" value="Broadcast">
-    </form>
-    <form id="join" method="POST" action='#'>
-        <input type="text" name="join_room" id="join_room" placeholder="Room Name">
-        <input type="submit" value="Join Room">
-    </form>
-    <form id="leave" method="POST" action='#'>
-        <input type="text" name="leave_room" id="leave_room" placeholder="Room Name">
-        <input type="submit" value="Leave Room">
-    </form>
-    <form id="send_room" method="POST" action='#'>
-        <input type="text" name="room_name" id="room_name" placeholder="Room Name">
-        <input type="text" name="room_data" id="room_data" placeholder="Message">
-        <input type="submit" value="Send to Room">
-    </form>
-    <form id="close" method="POST" action="#">
-        <input type="text" name="close_room" id="close_room" placeholder="Room Name">
-        <input type="submit" value="Close Room">
     </form>
     <form id="disconnect" method="POST" action="#">
         <input type="submit" value="Disconnect">
