@@ -29,31 +29,32 @@ def background_thread():
     while True:
         time.sleep(10)
         count += 1
-        # socketio.emit('my response',
-        #               {'data': 'Server generated event', 'count': count},
-        #               namespace='/vote')
+
+# socketio.emit('my response',
+#               {'data': 'Server generated event', 'count': count},
+#               namespace='/vote')
+
+# global thread
+# if thread is None:
+#     thread = Thread(target=background_thread)
+#     thread.start()
 
 @app.route('/')
 @login_required
 def index():
-    # global thread
-    # if thread is None:
-    #     thread = Thread(target=background_thread)
-    #     thread.start()
     if cas.username != admin and cas.username in clients:
-    	return render_template('error.html', error="duplicate")
+        return render_template('error.html', error="duplicate")
     else:
-    	clients.add(cas.username)
-    	return render_template('index.html', username = cas.username)
+        clients.add(cas.username)
+        return render_template('index.html', username = cas.username)
 
 @app.route('/admin')
 @login_required
 def admin_panel():
-	if cas.username != admin:
-    	return render_template('error.html', error="denied")
+    if cas.username != admin:
+        return render_template('error.html', error="denied")
     else:
-    	return render_template('admin.html')
-
+        return render_template('admin.html')
 
 @socketio.on('my event', namespace='/vote')
 def test_message(message):
@@ -65,8 +66,8 @@ def test_message(message):
 def test_broadcast_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
-         {'data': message['data'], 'count': session['receive_count']},
-         broadcast=True)
+        {'data': message['data'], 'count': session['receive_count']},
+        broadcast=True)
 
 
 @socketio.on('disconnect request', namespace='/vote')
