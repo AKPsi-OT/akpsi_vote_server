@@ -56,6 +56,10 @@ def admin_panel():
     else:
         return render_template('admin.html')
 
+@socketio.on('submit_vote', namespace='/vote')
+def function():
+    pass
+
 @socketio.on('my event', namespace='/vote')
 def test_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
@@ -69,7 +73,6 @@ def test_broadcast_message(message):
         {'data': message['data'], 'count': session['receive_count']},
         broadcast=True)
 
-
 @socketio.on('disconnect request', namespace='/vote')
 def disconnect_request():
     session['receive_count'] = session.get('receive_count', 0) + 1
@@ -77,16 +80,14 @@ def disconnect_request():
          {'data': 'Disconnected!', 'count': session['receive_count']})
     disconnect()
 
-
 @socketio.on('connect', namespace='/vote')
 def test_connect():
     emit('my response', {'data': 'Connected', 'count': 0})
 
-
 @socketio.on('disconnect', namespace='/vote')
 def test_disconnect():
+    clients.remove(cas.username)
     print('Client disconnected')
-
 
 if __name__ == "__main__":
     # Fetch the environment variable (so it works on Heroku):
