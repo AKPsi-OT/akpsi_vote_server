@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Flask-SocketIO Test</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            var err = '{{ error }}'
+            var message = ""
+
+            if (err === "denied"){
+                message = "Sorry, looks like you don't have permission to access this page!"
+            }else if (err === "duplicate"){
+                message = "Looks like you're already signed in on another page!"
+            }
+
+            $('#log').append('<h3>' + message + '</h3>');
+        });
+    </script>
+</head>
+<body>
+    <h1>404 Error</h1>
+    <div id="log"></div>
+</body>
+</html>

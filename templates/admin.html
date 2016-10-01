@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Admin Control Panel</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/static/spin.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var username = '{{ username }}';
+        $(document).ready(function(){
+            namespace = '/vote'; // change to an empty string
+            var socket = io.connect(namespace);
+            socket.on('connect', function() {
+                socket.emit('my event', {data: 'I\'m connected!'});
+            });
+
+            // event handler for server sent data
+            // the data is displayed in the "Received" section of the page
+            socket.on('vote_submitted', function(msg) {
+                $('#log').append('<br>Received #' + msg.count + ': ' + msg.data);
+            });
+
+            // handlers for the different forms in the page
+            // these send data to the server in a variety of ways
+
+        });
+    </script>
+</head>
+<body>
+    <div id="log"></div>
+</body>
+</html>
