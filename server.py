@@ -46,6 +46,14 @@ def index():
     	clients.add(cas.username)
     	return render_template('index.html', username = cas.username)
 
+@app.route('/admin')
+@login_required
+def admin_panel():
+	if cas.username != admin:
+    	return render_template('error.html', error="denied")
+    else:
+    	return render_template('admin.html')
+
 
 @socketio.on('my event', namespace='/vote')
 def test_message(message):
