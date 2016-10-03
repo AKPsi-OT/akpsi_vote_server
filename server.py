@@ -39,6 +39,10 @@ def background_thread():
 #     thread = Thread(target=background_thread)
 #     thread.start()
 
+#
+# Route definition
+#
+
 @app.route('/')
 @login_required
 def index():
@@ -56,9 +60,24 @@ def admin_panel():
     else:
         return render_template('admin.html')
 
-@socketio.on('submit_vote', namespace='/vote')
-def function():
-    pass
+#
+# Admin socket context functions
+#
+
+@socketio.on('start_vote', namespace='/vote')
+def start_vote(name, can_abstain):
+    if cas.username == admin:
+        emit('vote_start', {'name': name, 'abstain': can_abstain}, broadcast=True)
+
+@socketio.on('end_vote', namespace='/vote')
+def end_vote():
+    if cas.username == admin:
+        emit('vote_end', broadcast=True)
+
+
+#
+# Socket context functions
+#
 
 @socketio.on('my event', namespace='/vote')
 def test_message(message):
@@ -66,23 +85,20 @@ def test_message(message):
     emit('my response',
          {'data': message['data'], 'count': session['receive_count']})
 
-@socketio.on('my broadcast event', namespace='/vote')
-def test_broadcast_message(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-        {'data': message['data'], 'count': session['receive_count']},
-        broadcast=True)
+@socketio.on('submit_vote', namespace='/vote')
+def function():
+    pass
 
 @socketio.on('disconnect_req', namespace='/vote')
 def disconnect_request():
     if cas.username in clients:
-        print('Client disconnecting. Removing from clients set')
+        print('Client disconnecting, removing: ' + cas.username)
         clients.remove(cas.username)
     disconnect()
 
 @socketio.on('connect', namespace='/vote')
 def socket_attach():
-    print('Socket attached')
+    print('Socket attached: ' + cas.username)
 
 @socketio.on('disconnect', namespace='/vote')
 def socket_detach():
