@@ -73,21 +73,20 @@ def test_broadcast_message(message):
         {'data': message['data'], 'count': session['receive_count']},
         broadcast=True)
 
-@socketio.on('disconnect request', namespace='/vote')
+@socketio.on('disconnect_req', namespace='/vote')
 def disconnect_request():
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': 'Disconnected!', 'count': session['receive_count']})
+    if cas.username in clients:
+        print('Client disconnecting. Removing from clients set')
+        clients.remove(cas.username)
     disconnect()
 
 @socketio.on('connect', namespace='/vote')
-def test_connect():
-    emit('my response', {'data': 'Connected', 'count': 0})
+def socket_attach():
+    print('Socket attached')
 
 @socketio.on('disconnect', namespace='/vote')
-def test_disconnect():
-    clients.remove(cas.username)
-    print('Client disconnected')
+def socket_detach():
+    print('Socket disconnected')
 
 if __name__ == "__main__":
     # Fetch the environment variable (so it works on Heroku):

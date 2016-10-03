@@ -53,6 +53,9 @@
                 $('#log').append('<br>Received #' + msg.count + ': ' + msg.data);
             });
 
+            window.onbeforeunload = function(){
+                socket.emit('disconnect_req');
+            }
             // handlers for the different forms in the page
             // these send data to the server in a variety of ways
 
