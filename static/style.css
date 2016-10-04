@@ -1,0 +1,11 @@
+#c1, #c2 {
+	overflow-y: scroll;
+	width: 33%;
+	height: 50%;
+}
+
+#c3 {
+	overflow-y: scroll;
+	width: auto;
+	height: 50%;
+}
