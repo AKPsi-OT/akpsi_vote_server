@@ -3,34 +3,38 @@
 <head>
     <title>Bid Night 2016F</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/static/timer.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         var username = '{{ username }}';
 
         namespace = '/vote';
         var socket = io.connect(namespace);
+        var waiting = false;
 
         $(document).ready(function(){
+            var wait_message = 'Waiting for voting to start';
             var target = document.getElementById("log");
-            var wait = document.getElementById("wait");
-            var dots = window.setInterval( function() {
-                if ( wait.innerHTML.length > 3 )
-                    wait.innerHTML = "";
+            target.innerHTML = wait_message;
+
+            var dots = $.timer(function() {
+                if ( target.innerHTML.length > wait_message.length + 3 )
+                    target.innerHTML = wait_message;
                 else
-                    wait.innerHTML += ".";
-            }, 100);
+                    target.innerHTML += ".";
+            }, 230, true);
 
             socket.on('connect', function() {
-                target.innerHTML = '<p>Waiting for voting to start' + wait.innerHTML + '</p>';
             });
 
             socket.on('vote_start', function(msg){
+                dots.pause();
                 target.innerHTML = '<p>Voting on ' + msg.name + ' started with abstain=' + msg.abstain + '</p>';
             });
 
             // Catch window closing event and send a socket disconnect event
             window.onbeforeunload = function(){
-                    socket.emit('disconnect_req');
+                socket.emit('disconnect_req');
             }
         });
     </script>
@@ -38,6 +42,5 @@
 <body>
     <h2>Receive:</h2>
     <div id="log"></div>
-    <span id="wait">.</span>
 </body>
 </html>
