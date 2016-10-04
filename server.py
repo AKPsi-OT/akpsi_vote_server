@@ -58,7 +58,7 @@ def index():
 @app.route('/admin')
 @login_required
 def admin_panel():
-    if cas.username in admins:
+    if cas.username not in admins:
         return render_template('error.html', error="denied")
     else:
         return render_template('admin.html')
