@@ -14,6 +14,10 @@
             $('#log').append('Waiting for voting to start...');
         });
 
+        socket.on('vote_start', function(msg){
+            $('#log').append('Voting on ' + msg.name + ' started with abstain=' + msg.can_abstain);
+        });
+
         // Catch window closing event and send a socket disconnect event
         window.onbeforeunload = function(){
                 socket.emit('disconnect_req');
