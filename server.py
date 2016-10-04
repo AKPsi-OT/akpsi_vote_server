@@ -19,7 +19,9 @@ app.config['CAS_SERVER'] = 'https://login.umd.edu'
 app.config['CAS_LOGIN_ROUTE'] = '/cas/login'
 app.config['CAS_AFTER_LOGIN'] = 'index'
 
-admin = 'cgonza1'
+admins = set()
+admins.add('cgonza1')
+
 clients = set()
 thread = None
 
@@ -46,7 +48,8 @@ def background_thread():
 @app.route('/')
 @login_required
 def index():
-    if cas.username != admin and cas.username in clients:
+    # Check if already connected, only admins are allowed to do this
+    if cas.username not in admins and cas.username in clients:
         return render_template('error.html', error="duplicate")
     else:
         clients.add(cas.username)
@@ -55,7 +58,7 @@ def index():
 @app.route('/admin')
 @login_required
 def admin_panel():
-    if cas.username != admin:
+    if cas.username in admins:
         return render_template('error.html', error="denied")
     else:
         return render_template('admin.html')
@@ -66,12 +69,12 @@ def admin_panel():
 
 @socketio.on('start_vote', namespace='/vote')
 def start_vote(name, can_abstain):
-    if cas.username == admin:
+    if cas.username in admins:
         emit('vote_start', {'name': name, 'abstain': can_abstain}, broadcast=True)
 
 @socketio.on('end_vote', namespace='/vote')
 def end_vote():
-    if cas.username == admin:
+    if cas.username in admins:
         emit('vote_end', broadcast=True)
 
 
