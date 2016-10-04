@@ -15,7 +15,7 @@
         });
 
         socket.on('vote_start', function(msg){
-            $('#log').append('Voting on ' + msg.name + ' started with abstain=' + msg.can_abstain);
+            $('#log').append('Voting on ' + msg.name + ' started with abstain=' + msg.abstain);
         });
 
         // Catch window closing event and send a socket disconnect event
