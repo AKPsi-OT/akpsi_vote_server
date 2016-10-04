@@ -10,18 +10,21 @@
         namespace = '/vote';
         var socket = io.connect(namespace);
 
-        socket.on('connect', function() {
-            $('#log').append('Waiting for voting to start...');
-        });
+        $(document).ready(function(){
+            var target = document.getElementById("log");
+            socket.on('connect', function() {
+                target.innerHTML = '<p>Waiting for voting to start...</p>';
+            });
 
-        socket.on('vote_start', function(msg){
-            $('#log').append('Voting on ' + msg.name + ' started with abstain=' + msg.abstain);
-        });
+            socket.on('vote_start', function(msg){
+                target.innerHTML = '<p>Voting on ' + msg.name + ' started with abstain=' + msg.abstain + '</p>';
+            });
 
-        // Catch window closing event and send a socket disconnect event
-        window.onbeforeunload = function(){
-                socket.emit('disconnect_req');
-        }
+            // Catch window closing event and send a socket disconnect event
+            window.onbeforeunload = function(){
+                    socket.emit('disconnect_req');
+            }
+        });
     </script>
 </head>
 <body>
