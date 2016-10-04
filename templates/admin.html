@@ -16,7 +16,11 @@
 
         $('start').click(function(){
             console.log("clicked start");
-            socket.emit('start_vote', {name: 'Test', can_abstain='true'});
+            var data = {}
+            data.name = 'Test';
+            data.can_abstain = true;
+
+            socket.emit('start_vote', data);
         })
     </script>
 </head>
