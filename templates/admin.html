@@ -17,11 +17,11 @@
         $(document).ready(function(){
             $('form#start').submit(function(event) {
                 console.log("clicked start");
-                var data = {}
-                data.name = 'Test';
-                data.can_abstain = true;
+                var msg = {}
+                msg.name = 'Test';
+                msg.abstain = true;
 
-                socket.emit('start_vote', data);
+                socket.emit('start_vote', msg);
                 return false;
             })
         });
