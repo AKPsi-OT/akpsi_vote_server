@@ -18,8 +18,8 @@
             $('form#start').submit(function(event) {
                 console.log("clicked start");
                 var msg = {}
-                msg.name = 'Test';
-                msg.abstain = true;
+                msg.name = $('#name').val();
+                msg.abstain = $("input[name='abstain']:checked").val();;
 
                 socket.emit('start_vote', msg);
                 return false;
@@ -30,6 +30,9 @@
 <body>
     <div id="log"></div>
     <form id="start">
+        <input type="text" name="name" id="name" placeholder="Rush Name"> <br />
+        <label><input type="radio" name="abstain" value="true">Abstain</label>
+        <label><input type="radio" name="abstain" value="false">No Abstain</label> <br />
         <input type="submit" value="Start Vote">
     </form>
 </body>
