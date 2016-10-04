@@ -12,8 +12,16 @@
 
         $(document).ready(function(){
             var target = document.getElementById("log");
+            var wait = document.getElementById("wait");
+            var dots = window.setInterval( function() {
+                if ( wait.innerHTML.length > 3 )
+                    wait.innerHTML = "";
+                else
+                    wait.innerHTML += ".";
+            }, 100);
+
             socket.on('connect', function() {
-                target.innerHTML = '<p>Waiting for voting to start...</p>';
+                target.innerHTML = '<p>Waiting for voting to start' + wait.innerHTML + '</p>';
             });
 
             socket.on('vote_start', function(msg){
@@ -30,5 +38,6 @@
 <body>
     <h2>Receive:</h2>
     <div id="log"></div>
+    <span id="wait">.</span>
 </body>
 </html>
