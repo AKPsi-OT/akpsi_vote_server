@@ -40,21 +40,23 @@
 <body>
     <div id="wrapper">
         <div id="c1">
-            <form id="start" method="post">
-                <input type="text" name="name" id="name" placeholder="Rush Name"> <br />
-                <label><input type="radio" name="abstain" value="true">Abstain</label>
-                <label><input type="radio" name="abstain" value="false">No Abstain</label> <br />
-                <input type="submit" value="Start Vote">
-            </form>
-        </div>
-
-        <div id="c2">
 
         </div>
 
-        <div id="c3">
+        <div style="width: 100%; display: table;">
+            <div style="display: table-row">
+                <div id="c1" style="width: 33%; display: table-cell;">
+                    <form id="start" method="post">
+                        <input type="text" name="name" id="name" placeholder="Rush Name"> <br />
+                        <label><input type="radio" name="abstain" value="true">Abstain</label>
+                        <label><input type="radio" name="abstain" value="false">No Abstain</label> <br />
+                        <input type="submit" value="Start Vote">
+                    </form>
+                </div>
 
+                <div id="c2" style="width: 33%; display: table-cell;overflow-y: scroll;"></div>
+                <div id="c3" style="width: 34%; display: table-cell;overflow-y: scroll"></div>
+            </div>
         </div>
-    </div>
 </body>
 </html>
