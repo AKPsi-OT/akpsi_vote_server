@@ -4,12 +4,11 @@
     <title>Admin Control Panel</title>
     <link rel="stylesheet" href="/static/style.css">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="/static/spin.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         var username = '{{ username }}';
 
-        namespace = '/vote'; // change to an empty string
+        namespace = '/admin'; // change to an empty string
         var socket = io.connect(namespace);
         socket.on('connect', function() {
         });
