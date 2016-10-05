@@ -2,10 +2,12 @@
 	overflow-y: scroll;
 	width: 33%;
 	height: 50%;
+	position: relative;
 }
 
 #c3 {
 	overflow-y: scroll;
 	width: auto;
 	height: 50%;
+	position: relative;
 }
