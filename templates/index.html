@@ -47,16 +47,16 @@
 
                 console.log('Voting on ' + msg.name + ' started with abstain=' + msg.abstain);
                 target.innerHTML = html_form;
-            });
 
-            $('form#cast').submit(function(event){
-                console.log("submitted vote");
-                dots.play(true);
+                $('form#cast').submit(function(event){
+                    console.log("submitted vote");
+                    dots.play(true);
 
-                msg = {}
-                msg.bid = $("input[name='bid']:checked").val()
-                socket.emit('submit_vote', msg);
-                return false;
+                    msg = {}
+                    msg.bid = $("input[name='bid']:checked").val()
+                    socket.emit('submit_vote', msg);
+                    return false;
+                });
             });
 
             // Catch window closing event and send a socket disconnect event
