@@ -123,7 +123,7 @@ def socket_detach():
     print('Socket disconnected from user: ' + cas.username)
     clients_count[cas.username] -= 1
     print('Client count: ' + str(clients_count))
-    if cas.username in clients and clients_count[cas.username] == 1:
+    if cas.username in clients and clients_count[cas.username] == 0:
         print('Removing: ' + cas.username)
         clients.remove(cas.username)
     print('Clients is: ' + str(clients))
