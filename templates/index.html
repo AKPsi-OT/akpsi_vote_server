@@ -32,8 +32,8 @@
                 dots.pause();
                 var html_form = '<h4> Should ' + msg.name + ' receive a bid?</h4> \
                 <form id="cast"> \
-                <label><input type="radio" name="bid" value="yes">YES</label> \
-                <label><input type="radio" name="bid" value="no">NO</label>';
+                <label><input type="radio" name="bid" value="yes">Yes</label> \
+                <label><input type="radio" name="bid" value="no">No</label>';
 
                 if(msg.abstain){
                     html_form += '<label><input type="radio" name="bid" value="abstain">Abstain (DISCOURAGED)</label>';
@@ -62,7 +62,6 @@
     </script>
 </head>
 <body>
-    <h2>Receive:</h2>
     <div id="log"></div>
 </body>
 </html>
