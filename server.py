@@ -98,8 +98,8 @@ def function(vote):
         votes_cast += votes[key][current_name]
 
     votes_left = len(clients) - votes_cast
-
-    emit('vote_submitted', {'name':current_name, 'votes_cast': votes_cast, 'votes_left': votes_left})
+    print("votes is ", votes)
+    emit('vote_submitted', {'name':current_name, 'votes_cast': votes_cast, 'votes_left': votes_left}, broadcast=True)
 
 @socketio.on('disconnect_req', namespace='/vote')
 def disconnect_request():
