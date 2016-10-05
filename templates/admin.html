@@ -15,13 +15,18 @@
         });
 
         $(document).ready(function(){
+            socket.on('vote_submitted', function(msg){
+                $('#c2').append("Votes Cast: <b>" + msg.votes_cast + "</b>");
+                $('#c2').append("Votes Left: <b>" + msg.votes_left + "</b>");
+            });
+
             $('form#start').submit(function(event) {
-                console.log("clicked start");
                 var msg = {}
                 msg.name = $('#name').val();
-                msg.abstain = $("input[name='abstain']:checked").val();;
+                msg.abstain = $("input[name='abstain']:checked").val();
 
                 socket.emit('start_vote', msg);
+                $('#c2').append("============= VOTING ON " + msg.name + "STARTED =============");
                 return false;
             })
 
