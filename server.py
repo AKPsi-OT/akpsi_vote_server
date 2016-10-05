@@ -125,6 +125,7 @@ def socket_detach():
         print('Removing: ' + cas.username)
         clients.remove(cas.username)
     print('Clients is: ' + str(clients))
+    disconnect()
 
 if __name__ == "__main__":
     # Fetch the environment variable (so it works on Heroku):
