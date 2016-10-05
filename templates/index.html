@@ -15,6 +15,7 @@
         $(document).ready(function(){
             var wait_message = 'Waiting for voting to start';
             var target = document.getElementById("log");
+
             target.innerHTML = wait_message;
 
             var dots = $.timer(function() {
@@ -29,7 +30,28 @@
 
             socket.on('vote_start', function(msg){
                 dots.pause();
-                target.innerHTML = '<p>Voting on ' + msg.name + ' started with abstain=' + msg.abstain + '</p>';
+                var html_form = '<h4> Should ' + msg.name + ' receive a bid?</h4> \
+                <form id="cast"> \
+                <label><input type="radio" name="bid" value="yes">YES</label> \
+                <label><input type="radio" name="bid" value="no">NO</label> <br />';
+
+                if(msg.abstain){
+                    html_form += '<label><input type="radio" name="bid" value="abstain">Abstain (DISCOURAGED)</label>';
+                }
+
+                html_form += '<input type="submit" value="Cast"></form>'
+
+                console.log('Voting on ' + msg.name + ' started with abstain=' + msg.abstain);
+                target.innerHTML = html_form;
+            });
+
+            $('form#cast').submit(function(e){
+                console.log("submitted vote");
+                dots.play(true);
+
+                msg = {}
+                msg.bid = $("input[name='bid']:checked").val()
+                socket.emit('submit_vote', msg);
             });
 
             // Catch window closing event and send a socket disconnect event

@@ -57,7 +57,7 @@ def index():
         return render_template('error.html', error="duplicate")
     else:
         clients.add(cas.username)
-        print('Clients is: ' + clients)
+        print('Clients is: ', clients)
         return render_template('index.html', username = cas.username)
 
 @app.route('/admin')
