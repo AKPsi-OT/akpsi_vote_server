@@ -31,24 +31,6 @@ current_name = None
 current_abstain = None
 is_voting = False
 
-thread = None
-
-def background_thread():
-    """Example of how to send server generated events to clients."""
-    count = 0
-    while True:
-        time.sleep(10)
-        count += 1
-
-# socketio.emit('my response',
-#               {'data': 'Server generated event', 'count': count},
-#               namespace='/vote')
-
-# global thread
-# if thread is None:
-#     thread = Thread(target=background_thread)
-#     thread.start()
-
 #
 # Route definition
 #
@@ -85,6 +67,11 @@ def admin_disconnect():
 @socketio.on('start_vote', namespace='/admin')
 def start_vote(msg):
     if cas.username in admins:
+        global is_voting
+        global current_name
+        global current_abstain
+        global votes
+
         is_voting = True
         current_name = msg['name']
         current_abstain = msg['abstain']
@@ -98,6 +85,7 @@ def start_vote(msg):
 @socketio.on('end_vote', namespace='/admin')
 def end_vote():
     if cas.username in admins:
+        global is_voting
         is_voting = False
         emit('vote_end', namespace='/vote', broadcast=True)
 
@@ -107,6 +95,7 @@ def end_vote():
 
 @socketio.on('submit_vote', namespace='/vote')
 def function(vote):
+    global votes
     votes[vote['bid']][current_name] += 1
     votes_cast = 0
     votes_left = 0
@@ -128,7 +117,7 @@ def socket_attach():
     print('Client count: ' + str(clients_count))
     print('Socket attached: ' + cas.username)
     print('is_voting = ' + str(is_voting))
-    if is_voting == True:
+    if is_voting:
         print("Emitting vote_start to client connected after voting has started")
         emit('vote_start', {'name': msg['name'], 'abstain': msg['abstain']})
 
