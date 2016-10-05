@@ -86,10 +86,11 @@ def admin_disconnect():
 def start_vote(msg):
     if cas.username in admins:
         is_voting = True
-        print("name is " + msg['name'])
-        print("abstain is " + msg['abstain'])
         current_name = msg['name']
         current_abstain = msg['abstain']
+        print("name is " + current_name)
+        print("abstain is " + abstain)
+        print("is_voting is " + str(is_voting))
         for key in votes:
             votes[key][current_name] = 0
         emit('vote_start', {'name': current_name, 'abstain': current_abstain}, namespace='/vote', broadcast=True)
@@ -126,7 +127,7 @@ def socket_attach():
     print('Clients is: ' + str(clients))
     print('Client count: ' + str(clients_count))
     print('Socket attached: ' + cas.username)
-    print('is_voting = ' + is_voting)
+    print('is_voting = ' + str(is_voting))
     if is_voting == True:
         print("Emitting vote_start to client connected after voting has started")
         emit('vote_start', {'name': msg['name'], 'abstain': msg['abstain']})
