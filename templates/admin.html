@@ -12,7 +12,6 @@
         namespace = '/vote'; // change to an empty string
         var socket = io.connect(namespace);
         socket.on('connect', function() {
-            socket.emit('my event', {data: 'I\'m connected!'});
         });
 
         $(document).ready(function(){
