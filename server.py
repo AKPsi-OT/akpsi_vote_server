@@ -6,8 +6,8 @@ import time
 from collections import defaultdict
 from threading import Thread
 from flask import Flask, render_template, session, request
-from flask.ext.socketio import SocketIO, emit, disconnect
-from flask.ext.cas import CAS, login, logout, login_required
+from flask_socketio import SocketIO, emit, disconnect
+from flask_cas import CAS, login, logout, login_required
 
 app = Flask(__name__)
 
