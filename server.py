@@ -74,7 +74,15 @@ def admin_panel():
 # Admin socket context functions
 #
 
-@socketio.on('start_vote', namespace='/vote')
+@socketio.on('connect', namespace='/admin')
+def admin_connect():
+    print("Admin connected: " + cas.username)
+
+@socketio.on('disconnect', namespace='/admin')
+def admin_disconnect():
+    print("Admin disconnected: " + cas.username)
+
+@socketio.on('start_vote', namespace='/admin')
 def start_vote(msg):
     if cas.username in admins:
         is_voting = True
@@ -84,12 +92,11 @@ def start_vote(msg):
         current_abstain = msg['abstain']
         emit('vote_start', {'name': current_name, 'abstain': current_abstain}, namespace='/vote', broadcast=True)
 
-@socketio.on('end_vote', namespace='/vote')
+@socketio.on('end_vote', namespace='/admin')
 def end_vote():
     if cas.username in admins:
         is_voting = False
         emit('vote_end', namespace='/vote', broadcast=True)
-
 
 #
 # Socket context functions
@@ -106,7 +113,7 @@ def function(vote):
 
     votes_left = len(clients) - votes_cast
     print("votes is ", votes)
-    emit('vote_submitted', {'name':current_name, 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/vote', broadcast=True)
+    emit('vote_submitted', {'name':current_name, 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
 
 @socketio.on('connect', namespace='/vote')
 def socket_attach():
