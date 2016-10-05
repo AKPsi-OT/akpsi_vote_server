@@ -78,9 +78,11 @@ def admin_panel():
 def start_vote(msg):
     if cas.username in admins:
         is_voting = True
+        print("name is " + msg['name'])
+        print("abstain is " + msg['abstain'])
         current_name = msg['name']
         current_abstain = msg['abstain']
-        emit('vote_start', {'name': msg['name'], 'abstain': msg['abstain']}, namespace='/vote', broadcast=True)
+        emit('vote_start', {'name': current_name, 'abstain': current_abstain}, namespace='/vote', broadcast=True)
 
 @socketio.on('end_vote', namespace='/vote')
 def end_vote():
