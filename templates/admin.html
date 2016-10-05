@@ -26,7 +26,7 @@
                 msg.abstain = $("input[name='abstain']:checked").val();
 
                 socket.emit('start_vote', msg);
-                $('#c2').append("Voting on [" + msg.name + "]");
+                $('#c2').append("Voting on [" + msg.name + "]<br>");
                 return false;
             })
 
