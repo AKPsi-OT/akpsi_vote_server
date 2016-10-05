@@ -74,7 +74,7 @@ def admin_panel():
 # Admin socket context functions
 #
 
-@socketio.on('start_vote', namespace='/admin')
+@socketio.on('start_vote', namespace='/vote')
 def start_vote(msg):
     if cas.username in admins:
         is_voting = True
@@ -82,7 +82,7 @@ def start_vote(msg):
         current_abstain = msg['abstain']
         emit('vote_start', {'name': msg['name'], 'abstain': msg['abstain']}, namespace='/vote', broadcast=True)
 
-@socketio.on('end_vote', namespace='/admin')
+@socketio.on('end_vote', namespace='/vote')
 def end_vote():
     if cas.username in admins:
         is_voting = False
@@ -104,7 +104,7 @@ def function(vote):
 
     votes_left = len(clients) - votes_cast
     print("votes is ", votes)
-    emit('vote_submitted', {'name':current_name, 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
+    emit('vote_submitted', {'name':current_name, 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/vote', broadcast=True)
 
 @socketio.on('connect', namespace='/vote')
 def socket_attach():
