@@ -27,8 +27,8 @@ clients = set()
 clients_count = defaultdict(int)
 
 votes = defaultdict(lambda: defaultdict(int)) # 2D defaultdict, where votes[choice][rush_name] = count
-current_name = ""
-current_abstain = ""
+current_name = None
+current_abstain = None
 is_voting = False
 
 thread = None
@@ -126,7 +126,8 @@ def socket_attach():
     print('Clients is: ' + str(clients))
     print('Client count: ' + str(clients_count))
     print('Socket attached: ' + cas.username)
-    if is_voting:
+    print('is_voting = ' + is_voting)
+    if is_voting == True:
         print("Emitting vote_start to client connected after voting has started")
         emit('vote_start', {'name': msg['name'], 'abstain': msg['abstain']})
 
