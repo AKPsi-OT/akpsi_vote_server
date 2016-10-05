@@ -35,8 +35,8 @@
                 <label><input type="radio" name="bid" value="yes">Yes</label> \
                 <label><input type="radio" name="bid" value="no">No</label>';
 
-                if(msg.abstain){
-                    html_form += '<label><input type="radio" name="bid" value="abstain">Abstain (DISCOURAGED)</label>';
+                if(msg.abstain == "true"){
+                    html_form += '<label><input type="radio" name="bid" value="abstain">Abstain</label>';
                 }
 
                 html_form += '<br><input type="submit" value="Cast"></form>'
@@ -52,6 +52,7 @@
                 msg = {}
                 msg.bid = $("input[name='bid']:checked").val()
                 socket.emit('submit_vote', msg);
+                return false;
             });
 
             // Catch window closing event and send a socket disconnect event
