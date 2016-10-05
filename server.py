@@ -1,6 +1,6 @@
 import os
-from gevent import monkey
-monkey.patch_all()
+from eventlet
+eventlet.monkey_patch()
 
 import time
 from collections import defaultdict
