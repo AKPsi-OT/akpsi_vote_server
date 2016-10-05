@@ -119,7 +119,7 @@ def socket_attach():
     print('is_voting = ' + str(is_voting))
     if is_voting:
         print("Emitting vote_start to client connected after voting has started")
-        emit('vote_start', {'name': msg['name'], 'abstain': msg['abstain']})
+        emit('vote_start', {'name': current_name, 'abstain': current_abstain})
 
 @socketio.on('disconnect', namespace='/vote')
 def socket_detach():
