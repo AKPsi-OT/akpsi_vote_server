@@ -24,6 +24,11 @@
                 socket.emit('start_vote', msg);
                 return false;
             })
+
+            // Catch window closing event and send a socket disconnect event
+            window.onbeforeunload = function(){
+                socket.emit('disconnect_req');
+            }
         });
     </script>
 </head>
