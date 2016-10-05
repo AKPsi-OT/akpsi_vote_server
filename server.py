@@ -104,7 +104,7 @@ def function(vote):
 @socketio.on('disconnect_req', namespace='/vote')
 def disconnect_request():
     if cas.username in clients:
-        print('Client disconnecting, removing: ' + cas.username)
+        print('Client disconnecting, removing: ', cas.username)
         clients.remove(cas.username)
     disconnect()
 
@@ -114,7 +114,7 @@ def socket_attach():
 
 @socketio.on('disconnect', namespace='/vote')
 def socket_detach():
-    print('Socket disconnected from user: ' + cas.username)
+    print('Socket disconnected from user: ', cas.username)
 
 if __name__ == "__main__":
     # Fetch the environment variable (so it works on Heroku):
