@@ -90,6 +90,8 @@ def start_vote(msg):
         print("abstain is " + msg['abstain'])
         current_name = msg['name']
         current_abstain = msg['abstain']
+        for key in votes:
+            votes[key][current_name] = 0
         emit('vote_start', {'name': current_name, 'abstain': current_abstain}, namespace='/vote', broadcast=True)
 
 @socketio.on('end_vote', namespace='/admin')
@@ -125,6 +127,7 @@ def socket_attach():
     print('Client count: ' + str(clients_count))
     print('Socket attached: ' + cas.username)
     if is_voting:
+        print("Emitting vote_start to client connected after voting has started")
         emit('vote_start', {'name': msg['name'], 'abstain': msg['abstain']})
 
 @socketio.on('disconnect', namespace='/vote')
