@@ -30,8 +30,12 @@
 
             socket.on('vote_start', function(msg){
                 dots.pause();
+                // var form = document.createElement("form");
+                // var vote = document.createElement("input");
+                // vote.setAttribute()
+
                 var html_form = '<h4> Should ' + msg.name + ' receive a bid?</h4> \
-                <form id="cast"> \
+                <form id="cast" onsubmit="cast_vote();"> \
                 <label><input type="radio" name="bid" value="yes">Yes</label> \
                 <label><input type="radio" name="bid" value="no">No</label>';
 
@@ -45,21 +49,23 @@
                 target.innerHTML = html_form;
             });
 
-            $('form#cast').submit(function(e){
-                console.log("submitted vote");
-                dots.play(true);
-
-                msg = {}
-                msg.bid = $("input[name='bid']:checked").val()
-                socket.emit('submit_vote', msg);
-                return false;
-            });
+            $('form#cast').submit(cast_vote());
 
             // Catch window closing event and send a socket disconnect event
             window.onbeforeunload = function(){
                 socket.emit('disconnect_req');
             }
         });
+
+        function cast_vote(){
+            console.log("submitted vote");
+            dots.play(true);
+
+            msg = {}
+            msg.bid = $("input[name='bid']:checked").val()
+            socket.emit('submit_vote', msg);
+            return false;
+        }
     </script>
 </head>
 <body>
