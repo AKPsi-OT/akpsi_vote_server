@@ -33,13 +33,13 @@
                 var html_form = '<h4> Should ' + msg.name + ' receive a bid?</h4> \
                 <form id="cast"> \
                 <label><input type="radio" name="bid" value="yes">YES</label> \
-                <label><input type="radio" name="bid" value="no">NO</label> <br />';
+                <label><input type="radio" name="bid" value="no">NO</label>';
 
                 if(msg.abstain){
                     html_form += '<label><input type="radio" name="bid" value="abstain">Abstain (DISCOURAGED)</label>';
                 }
 
-                html_form += '<input type="submit" value="Cast"></form>'
+                html_form += '<br><input type="submit" value="Cast"></form>'
 
                 console.log('Voting on ' + msg.name + ' started with abstain=' + msg.abstain);
                 target.innerHTML = html_form;
