@@ -113,6 +113,8 @@ def function(vote):
 
     votes_left = len(clients) - votes_cast
     print("votes is ", votes)
+    print("current_name = " + current_name)
+    print("current_abstain = " + current_abstain)
     emit('vote_submitted', {'name':current_name, 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
 
 @socketio.on('connect', namespace='/vote')
