@@ -24,8 +24,12 @@ admins = set()
 admins.add('cgonza1')
 
 clients = set()
-votes = defaultdict(lambda: defaultdict(int)); # 2D defaultdict, where votes[choice][rush_name] = count
+clients_count = defaultdict(int)
+
+votes = defaultdict(lambda: defaultdict(int)) # 2D defaultdict, where votes[choice][rush_name] = count
 current_name = ""
+current_abstain = ""
+is_voting = False
 
 thread = None
 
@@ -56,8 +60,6 @@ def index():
     if cas.username not in admins and cas.username in clients:
         return render_template('error.html', error="duplicate")
     else:
-        clients.add(cas.username)
-        print('Clients is: ', clients)
         return render_template('index.html', username = cas.username)
 
 @app.route('/admin')
@@ -75,12 +77,15 @@ def admin_panel():
 @socketio.on('start_vote', namespace='/vote')
 def start_vote(msg):
     if cas.username in admins:
+        is_voting = True
         current_name = msg['name']
+        current_abstain = msg['abstain']
         emit('vote_start', {'name': msg['name'], 'abstain': msg['abstain']}, broadcast=True)
 
 @socketio.on('end_vote', namespace='/vote')
 def end_vote():
     if cas.username in admins:
+        is_voting = False
         emit('vote_end', broadcast=True)
 
 
@@ -101,20 +106,23 @@ def function(vote):
     print("votes is ", votes)
     emit('vote_submitted', {'name':current_name, 'votes_cast': votes_cast, 'votes_left': votes_left}, broadcast=True)
 
-@socketio.on('disconnect_req', namespace='/vote')
-def disconnect_request():
-    if cas.username in clients:
-        print('Client disconnecting, removing: ', cas.username)
-        clients.remove(cas.username)
-    disconnect()
-
 @socketio.on('connect', namespace='/vote')
 def socket_attach():
+    clients.add(cas.username)
+    clients_count[cas.username] += 1
+    print('Clients is: ' + str(clients))
     print('Socket attached: ' + cas.username)
+    if is_voting:
+        emit('vote_start', {'name': msg['name'], 'abstain': msg['abstain']})
 
 @socketio.on('disconnect', namespace='/vote')
 def socket_detach():
-    print('Socket disconnected from user: ', cas.username)
+    print('Socket disconnected from user: ' + cas.username)
+    if cas.username in clients and clients_count[cas.username] == 1:
+        print('Removing: ' + cas.username)
+        clients.remove(cas.username)
+    else:
+        clients_count[cas.username] -= 1
 
 if __name__ == "__main__":
     # Fetch the environment variable (so it works on Heroku):
