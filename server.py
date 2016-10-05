@@ -1,5 +1,5 @@
 import os
-from eventlet
+import eventlet
 eventlet.monkey_patch()
 
 import time
