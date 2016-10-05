@@ -88,12 +88,6 @@ def end_vote():
 # Socket context functions
 #
 
-@socketio.on('my event', namespace='/vote')
-def test_message(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my response',
-         {'data': message['data'], 'count': session['receive_count']})
-
 @socketio.on('submit_vote', namespace='/vote')
 def function(vote):
     votes[vote['bid']][current_name] += 1
