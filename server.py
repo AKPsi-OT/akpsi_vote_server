@@ -118,6 +118,7 @@ def admin_disconnect():
 def start_vote(msg):
     if cas.username in ADMINS:
         has_voted.clear()
+        not_voted.clear()
         global is_voting
         global current_name
         global current_abstain
@@ -147,6 +148,11 @@ def end_vote():
 
 @socketio.on('get_not_voted', namespace='/admin')
 def query_not_voted():
+    global not_voted
+    if has_voted:
+        not_voted = clients - has_voted
+    else:
+        not_voted = clients
     names = ', '.join([id_map[n] for n in not_voted])
     print("not voted names: " + names)
     emit('receive_not_voted', {'names': names}, namespace='/admin', broadcast=True)
@@ -161,8 +167,6 @@ def function(vote):
     global has_voted
     global not_voted
     has_voted.add(cas.username)
-    print("not voted=" + str(not_voted))
-    not_voted = clients - has_voted
     votes[vote['bid']][current_name] += 1
     votes_cast = 0
     votes_left = 0
