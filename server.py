@@ -4,8 +4,9 @@ eventlet.monkey_patch()
 
 import time
 import csv
+
 from collections import defaultdict
-from threading import Thread
+from __future__ import division
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, disconnect
 from flask_cas import CAS, login, logout, login_required
@@ -21,11 +22,15 @@ app.config['CAS_SERVER'] = 'https://login.umd.edu'
 app.config['CAS_LOGIN_ROUTE'] = '/cas/login'
 app.config['CAS_AFTER_LOGIN'] = 'index'
 
+BID_THRESHOLD = 0.75
+
 ADMINS = set()
 ADMINS.add('cgonza1')
 ADMINS.add('tantony')
 ADMINS.add('jlewis10')
 
+has_voted = set()
+not_voted = set()
 clients = set()
 clients_count = defaultdict(int)
 
@@ -49,6 +54,29 @@ def make_id_map():
     return temp
 
 id_map = make_id_map()
+
+#
+# Utility functions
+#
+
+def generate_vote_report():
+    report_fmt = ("Vote Report: {}"
+        "\nYes: {:.2f}%"
+        "\nNo: {:.2f}%"
+        "\nAbstain: {:.2f}%"
+        "\nBid? {}")
+    yes = votes['yes'][current_name]
+    no = votes['no'][current_name]
+    abstain = votes['abstain'][current_name]
+    total  = yes + no + abstain
+    bid = ""
+    if (yes/total) >= BID_THRESHOLD:
+        bid = "YES"
+    else:
+        bid = "NO"
+    report = report_fmt.format(current_name, yes/total, no/total, abstain/total, bid)
+
+
 #
 # Route definition
 #
@@ -88,6 +116,7 @@ def admin_disconnect():
 @socketio.on('start_vote', namespace='/admin')
 def start_vote(msg):
     if cas.username in ADMINS:
+        has_voted.clear()
         global is_voting
         global current_name
         global current_abstain
@@ -108,6 +137,8 @@ def end_vote():
     if cas.username in ADMINS:
         global is_voting
         is_voting = False
+        report = generate_vote_report()
+        emit('vote_report', {'report': report}, namespace='/admin', broadcast=True)
         emit('vote_end', namespace='/vote', broadcast=True)
 
 #
@@ -117,6 +148,8 @@ def end_vote():
 @socketio.on('submit_vote', namespace='/vote')
 def function(vote):
     global votes
+    global has_voted
+    has_voted.add(cas.username)
     votes[vote['bid']][current_name] += 1
     votes_cast = 0
     votes_left = 0
