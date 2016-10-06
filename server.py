@@ -136,9 +136,9 @@ def start_vote(msg):
 @socketio.on('end_vote', namespace='/admin')
 def end_vote():
     if cas.username in ADMINS:
+        global is_voting
         if is_voting:
             print("ending vote...")
-            global is_voting
             is_voting = False
             report = generate_vote_report()
             print("Report is: " + report)
