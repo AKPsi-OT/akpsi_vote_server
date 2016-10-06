@@ -15,7 +15,7 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
         var waiting = false;
 
         $(document).ready(function(){
-            var tags_left='<h2 style="text-align: center;">'
+            var tags_left='<h2 style="text-align: center; ">'
             var tags_right = '</h2>'
             var wait_message = 'Waiting for voting to start';
             var wait_message_dots = wait_message;
@@ -24,9 +24,9 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
             target.innerHTML = wait_message;
 
             var dots = $.timer(function() {
-                if ( target.innerHTML.length > wait_message_dots.length + 3 ){
+                if ( wait_message_dots.length > wait_message.length + 3 ){
                     wait_message_dots = wait_message;
-                    target.innerHTML = wait_message_dots;
+                    target.innerHTML = tags_left + wait_message_dots + tags_right;
                 }else{
                     wait_message_dots += ".";
                     target.innerHTML = tags_left + wait_message_dots + tags_right;
