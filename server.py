@@ -35,8 +35,8 @@ clients = set()
 clients_count = defaultdict(int)
 
 votes = defaultdict(lambda: defaultdict(int)) # 2D defaultdict, where votes[choice][rush_name] = count
-current_name = None
-current_abstain = None
+current_name = ""
+current_abstain = ""
 is_voting = False
 
 #
@@ -144,6 +144,10 @@ def end_vote():
             print("Report is: " + report)
             emit('vote_report', {'report': report}, namespace='/admin', broadcast=True)
             emit('vote_end', namespace='/vote', broadcast=True)
+
+@socketio.on('get_not_voted', namespace='/admin')
+def query_not_voted():
+
 
 #
 # Socket context functions
