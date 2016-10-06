@@ -75,6 +75,7 @@ def generate_vote_report():
     else:
         bid = "NO"
     report = report_fmt.format(current_name, yes/total, no/total, abstain/total, bid)
+    return report
 
 
 #
