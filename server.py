@@ -60,11 +60,11 @@ id_map = make_id_map()
 #
 
 def generate_vote_report():
-    report_fmt = ("Vote Report: {}"
-        "\nYes: {:.2f}%"
-        "\nNo: {:.2f}%"
-        "\nAbstain: {:.2f}%"
-        "\nBid? {}")
+    report_fmt = ("<b>Vote Report: {}</b><br>"
+        "Yes: {:.2f}%<br>"
+        "No: {:.2f}%<br>"
+        "Abstain: {:.2f}%<br>"
+        "Bid? {}<br>")
     yes = votes['yes'][current_name]
     no = votes['no'][current_name]
     abstain = votes['abstain'][current_name]
