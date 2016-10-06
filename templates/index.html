@@ -48,10 +48,10 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
                 // var vote = document.createElement("input");
                 // vote.setAttribute()
 
-                var html_form = '<h2>Should ' + msg.name + ' receive a bid?</h2><form id="cast"><ul><li><input type="radio" id="a" name="bid"><label for="a">Yes</label><div class="check"></div></li><li><input type="radio" id="b" name="bid"><label for="b">No</label><div class="check"><div class="inside"></div></div></li>';
+                var html_form = '<h2>Should ' + msg.name + ' receive a bid?</h2><form id="cast"><ul><li><input type="radio" id="a" name="bid" value="yes"><label for="a">Yes</label><div class="check"></div></li><li><input type="radio" id="b" name="bid" value="no"><label for="b">No</label><div class="check"><div class="inside"></div></div></li>';
 
                 if(msg.abstain == "true"){
-                    html_form += '<li><input type="radio" id="c" name="bid"><label for="c">Abstain</label><div class="check"><div class="inside"></div></div></li>';
+                    html_form += '<li><input type="radio" id="c" name="bid" value="abstain"><label for="c">Abstain</label><div class="check"><div class="inside"></div></div></li>';
                 }
 
                 html_form += '</ul><div class="centerdiv"><input value="Cast" type="submit" style="height: 50px; width: 100%; margin: 0 auto;" /></div></form>';
