@@ -34,6 +34,11 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
                 return false;
             })
 
+            $('form#end').submit(function(event) {
+                socket.emit('end_vote');
+                return false;
+            })
+
             // Catch window closing event and send a socket disconnect event
             window.onbeforeunload = function(){
                 socket.emit('disconnect_req');
@@ -55,6 +60,9 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
                         <label><input type="radio" name="abstain" value="true">Abstain</label>
                         <label><input type="radio" name="abstain" value="false">No Abstain</label> <br />
                         <input type="submit" value="Start Vote">
+                    </form>
+                    <form id="end">
+                        <input type="submit" value="End Vote">
                     </form>
                 </div>
 
