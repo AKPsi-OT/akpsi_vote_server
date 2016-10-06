@@ -3,6 +3,7 @@ import eventlet
 eventlet.monkey_patch()
 
 import time
+import csv
 from collections import defaultdict
 from threading import Thread
 from flask import Flask, render_template, session, request
@@ -20,8 +21,9 @@ app.config['CAS_SERVER'] = 'https://login.umd.edu'
 app.config['CAS_LOGIN_ROUTE'] = '/cas/login'
 app.config['CAS_AFTER_LOGIN'] = 'index'
 
-admins = set()
-admins.add('cgonza1')
+ADMINS = set()
+ADMINS.add('cgonza1')
+ADMINS.add('tantony')
 
 clients = set()
 clients_count = defaultdict(int)
@@ -32,14 +34,30 @@ current_abstain = None
 is_voting = False
 
 #
+# Initialization
+#
+
+def make_id_map():
+    temp = defaultdict(str)
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    map_path = os.path.join(SITE_ROOT, 'static', 'ids.csv')
+    with open(map_path) as csvfile:
+        reader = csv.reader(open(map_path, "rb"))
+        for row in reader:
+            temp[row[0]] = row[1]
+        print temp
+    return temp
+
+id_map = make_id_map()
+#
 # Route definition
 #
 
 @app.route('/')
 @login_required
 def index():
-    # Check if already connected, only admins are allowed to do this
-    if cas.username not in admins and cas.username in clients:
+    # Check if already connected, only ADMINS are allowed to do this
+    if cas.username not in ADMINS and cas.username in clients:
         return render_template('error.html', error="duplicate")
     else:
         return render_template('index.html', username = cas.username)
@@ -47,7 +65,7 @@ def index():
 @app.route('/admin')
 @login_required
 def admin_panel():
-    if cas.username not in admins:
+    if cas.username not in ADMINS:
         return render_template('error.html', error="denied")
     else:
         return render_template('admin.html')
@@ -66,7 +84,7 @@ def admin_disconnect():
 
 @socketio.on('start_vote', namespace='/admin')
 def start_vote(msg):
-    if cas.username in admins:
+    if cas.username in ADMINS:
         global is_voting
         global current_name
         global current_abstain
@@ -84,7 +102,7 @@ def start_vote(msg):
 
 @socketio.on('end_vote', namespace='/admin')
 def end_vote():
-    if cas.username in admins:
+    if cas.username in ADMINS:
         global is_voting
         is_voting = False
         emit('vote_end', namespace='/vote', broadcast=True)
@@ -111,6 +129,9 @@ def function(vote):
 
 @socketio.on('connect', namespace='/vote')
 def socket_attach():
+    print("--id map--")
+    for k in id_map:
+        print("" + k + "=>" + id_map[k])
     clients.add(cas.username)
     clients_count[cas.username] += 1
     print('Clients is: ' + str(clients))
