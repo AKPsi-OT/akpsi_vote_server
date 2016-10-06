@@ -97,7 +97,7 @@ def start_vote(msg):
         current_name = msg['name']
         current_abstain = msg['abstain']
         print("name is " + current_name)
-        print("abstain is " + abstain)
+        print("abstain is " + current_abstain)
         print("is_voting is " + str(is_voting))
         for key in votes:
             votes[key][current_name] = 0
