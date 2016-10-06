@@ -24,6 +24,7 @@ app.config['CAS_AFTER_LOGIN'] = 'index'
 ADMINS = set()
 ADMINS.add('cgonza1')
 ADMINS.add('tantony')
+ADMINS.add('jlewis10')
 
 clients = set()
 clients_count = defaultdict(int)
@@ -127,7 +128,7 @@ def function(vote):
     print("votes is ", votes)
     print("current_name = " + current_name)
     print("current_abstain = " + current_abstain)
-    emit('vote_submitted', {'name':current_name, 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
+    emit('vote_submitted', {'name':id_map[cas.username], 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
 
 @socketio.on('connect', namespace='/vote')
 def socket_attach():
