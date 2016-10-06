@@ -74,7 +74,7 @@ def generate_vote_report():
         bid = "YES"
     else:
         bid = "NO"
-    report = report_fmt.format(current_name, yes/total, no/total, abstain/total, bid)
+    report = report_fmt.format(current_name, yes * 100/total, no * 100/total, abstain * 100/total, bid)
     return report
 
 
@@ -155,6 +155,7 @@ def function(vote):
     global has_voted
     global not_voted
     has_voted.add(cas.username)
+    print("not voted=" + str(not_voted))
     not_voted = clients - has_voted
     votes[vote['bid']][current_name] += 1
     votes_cast = 0
