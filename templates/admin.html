@@ -22,6 +22,11 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
 
             socket.on('vote_report', function(msg){
                 console.log("Report is:" + msg.report);
+                $('#c3').append("----------<br>" + msg.report + "<br>")
+            })
+
+            socket.on('receive_not_voted', function(msg){
+                $('#c3').append("----------<br>Not Voted: <b>" + msg.names + "</b><br>");
             })
 
             $('form#start').submit(function(event) {
@@ -30,12 +35,17 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
                 msg.abstain = $("input[name='abstain']:checked").val();
 
                 socket.emit('start_vote', msg);
-                $('#c2').append("<br><b><u>Voting on [" + msg.name + "]</u></b><br>");
+                $('#c2').append("<br>Voting on <b><u>[" + msg.name + "]</u></b><br>");
                 return false;
             })
 
             $('form#end').submit(function(event) {
                 socket.emit('end_vote');
+                return false;
+            })
+
+            $('form#names').submit(function(event) {
+                socket.emit('get_not_voted');
                 return false;
             })
 

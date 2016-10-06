@@ -147,8 +147,9 @@ def end_vote():
 
 @socketio.on('get_not_voted', namespace='/admin')
 def query_not_voted():
-    blame_str = ', '.join(not_voted)
-    emit('receive_not_voted', {'names': blame_str}, namespace='/admin', broadcast=True)
+    names = ', '.join([id_map[n] for n in not_voted])
+    print("not voted names: " + names)
+    emit('receive_not_voted', {'names': names}, namespace='/admin', broadcast=True)
 
 #
 # Socket context functions
