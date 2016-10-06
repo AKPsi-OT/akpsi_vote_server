@@ -136,9 +136,11 @@ def start_vote(msg):
 def end_vote():
     if cas.username in ADMINS:
         if is_voting:
+            print("ending vote...")
             global is_voting
             is_voting = False
             report = generate_vote_report()
+            print("Report is: " + report)
             emit('vote_report', {'report': report}, namespace='/admin', broadcast=True)
             emit('vote_end', namespace='/vote', broadcast=True)
 
