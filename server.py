@@ -135,11 +135,12 @@ def start_vote(msg):
 @socketio.on('end_vote', namespace='/admin')
 def end_vote():
     if cas.username in ADMINS:
-        global is_voting
-        is_voting = False
-        report = generate_vote_report()
-        emit('vote_report', {'report': report}, namespace='/admin', broadcast=True)
-        emit('vote_end', namespace='/vote', broadcast=True)
+        if is_voting:
+            global is_voting
+            is_voting = False
+            report = generate_vote_report()
+            emit('vote_report', {'report': report}, namespace='/admin', broadcast=True)
+            emit('vote_end', namespace='/vote', broadcast=True)
 
 #
 # Socket context functions
