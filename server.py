@@ -1,3 +1,4 @@
+from __future__ import division
 import os
 import eventlet
 eventlet.monkey_patch()
@@ -6,7 +7,6 @@ import time
 import csv
 
 from collections import defaultdict
-from __future__ import division
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, disconnect
 from flask_cas import CAS, login, logout, login_required
@@ -149,7 +149,9 @@ def end_vote():
 def function(vote):
     global votes
     global has_voted
+    global not_voted
     has_voted.add(cas.username)
+    not_voted = clients - has_voted
     votes[vote['bid']][current_name] += 1
     votes_cast = 0
     votes_left = 0
