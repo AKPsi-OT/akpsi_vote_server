@@ -45,7 +45,6 @@ def make_id_map():
         reader = csv.reader(open(map_path, "rb"))
         for row in reader:
             temp[row[0]] = row[1]
-        print temp
     return temp
 
 id_map = make_id_map()
@@ -57,6 +56,9 @@ id_map = make_id_map()
 @login_required
 def index():
     # Check if already connected, only ADMINS are allowed to do this
+    if cas.username not in id_map:
+        return render_template('error.html', error="denied")
+
     if cas.username not in ADMINS and cas.username in clients:
         return render_template('error.html', error="duplicate")
     else:
@@ -129,9 +131,6 @@ def function(vote):
 
 @socketio.on('connect', namespace='/vote')
 def socket_attach():
-    print("--id map--")
-    for k in id_map:
-        print("" + k + "=>" + id_map[k])
     clients.add(cas.username)
     clients_count[cas.username] += 1
     print('Clients is: ' + str(clients))
