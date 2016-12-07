@@ -171,7 +171,7 @@ def function(vote):
     global has_voted
     global not_voted
 
-    if cas.username in has_voted
+    if cas.username in has_voted:
         return
 
     has_voted.add(cas.username)
