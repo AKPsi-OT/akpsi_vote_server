@@ -38,6 +38,8 @@ votes = defaultdict(lambda: defaultdict(int)) # 2D defaultdict, where votes[choi
 current_name = ""
 current_abstain = ""
 is_voting = False
+custom_vote = False
+custom_opts = []
 
 #
 # Initialization
@@ -85,13 +87,6 @@ def generate_vote_report():
 @app.route('/')
 @login_required
 def index():
-    # Check if already connected, only ADMINS are allowed to do this
-    if cas.username not in id_map:
-        return render_template('error.html', error="denied")
-
-    if cas.username not in ADMINS and cas.username in clients:
-        return render_template('error.html', error="duplicate")
-    else:
         return render_template('index.html', username = cas.username)
 
 @app.route('/admin')
@@ -123,16 +118,25 @@ def start_vote(msg):
         global current_name
         global current_abstain
         global votes
+        global custom_opts
+        global custom_vote
 
         is_voting = True
-        current_name = msg['name']
-        current_abstain = msg['abstain']
-        print("name is " + current_name)
-        print("abstain is " + current_abstain)
-        print("is_voting is " + str(is_voting))
-        for key in votes:
-            votes[key][current_name] = 0
-        emit('vote_start', {'name': current_name, 'abstain': current_abstain}, namespace='/vote', broadcast=True)
+        if msg['custom'] == "true":
+            custom_vote = True
+            topic = msg['topic']
+            options = msg['options']
+            custom_opts = options.splitlines()
+            emit('vote_start', {'custom': msg['custom'], 'options': options, 'topic': topic})
+        else:
+            current_name = msg['name']
+            current_abstain = msg['abstain']
+            print("name is " + current_name)
+            print("abstain is " + current_abstain)
+            print("is_voting is " + str(is_voting))
+            for key in votes:
+                votes[key][current_name] = 0
+            emit('vote_start', {'custom': msg['custom'], 'name': current_name, 'abstain': current_abstain}, namespace='/vote', broadcast=True)
 
 @socketio.on('end_vote', namespace='/admin')
 def end_vote():
@@ -166,6 +170,10 @@ def function(vote):
     global votes
     global has_voted
     global not_voted
+
+    if cas.username in has_voted
+        return
+
     has_voted.add(cas.username)
     votes[vote['bid']][current_name] += 1
     votes_cast = 0
