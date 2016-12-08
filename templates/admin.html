@@ -17,17 +17,17 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
         $(document).ready(function(){
             socket.on('vote_submitted', function(msg){
                 console.log('Received vote submitted');
-                $('#c2').val(msg.name + " submitted their vote.<br>");
-                $('#c2').val("Votes Cast: <b>" + msg.votes_cast + "</b>, Votes Left: <b>" + msg.votes_left + "</b><br>");
+                $('#c2').html(msg.name + " submitted their vote.<br>");
+                $('#c2').html("Votes Cast: <b>" + msg.votes_cast + "</b>, Votes Left: <b>" + msg.votes_left + "</b><br>");
             });
 
             socket.on('vote_report', function(msg){
                 console.log("Report is:" + msg.report);
-                $('#c3').val("----------<br>" + msg.report + "<br>")
+                $('#c3').html("----------<br>" + msg.report + "<br>")
             })
 
             socket.on('receive_not_voted', function(msg){
-                $('#c3').append("----------<br>Not Voted: <b>" + msg.names + "</b><br>");
+                $('#c3').html("----------<br>Not Voted: <b>" + msg.names + "</b><br>");
             })
 
             $('form#start').submit(function(event) {
