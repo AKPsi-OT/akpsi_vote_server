@@ -189,8 +189,6 @@ def function(vote):
     if cas.username in has_voted:
         return
 
-    has_voted.add(cas.username)
-
     votes_cast = 0
     votes_left = 0
 
@@ -209,6 +207,7 @@ def function(vote):
 
     votes_left = len(clients) - votes_cast
     emit('vote_submitted', {'name':id_map[cas.username], 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
+    has_voted.add(cas.username)
 
 @socketio.on('connect', namespace='/vote')
 def socket_attach():
