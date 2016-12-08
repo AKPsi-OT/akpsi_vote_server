@@ -13,6 +13,7 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
         namespace = '/vote';
         var socket = io.connect(namespace);
         var waiting = false;
+        var options;
 
         $(document).ready(function(){
             var tags_left='<h2 style="text-align: center; ">'
@@ -52,6 +53,7 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
 
                 if(msg.custom == "true"){
                     html_form = '<h2>' + msg.topic + '</h2><form id="cast"><ul>'
+                    options = msg.options;
 
                     for(var i = 0; i < msg.options.length; i++){
                         var id = 'a' + i;
@@ -69,7 +71,7 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
                         dots.play(true);
                         var name = "";
 
-                        for(var j = 0; j < msg.options.length; i++){
+                        for(var j = 0; j < options.length; i++){
                             var id = 'a' + j;
                             if($('#' + id).is(':checked')){
                                 name = $('#' + id).val();
