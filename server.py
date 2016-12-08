@@ -72,7 +72,7 @@ def generate_vote_report():
 
         report = ""
         for key in custom_counts:
-            report += key + " " + str(custom_counts[key]) + ", " + str(custom_counts[key]/total) + "<br>"
+            report += key + " " + str(custom_counts[key]) + " -- " + str(custom_counts[key]*100/total) + "<br>"
 
         return report
     else:
