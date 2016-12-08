@@ -39,7 +39,10 @@ current_name = ""
 current_abstain = ""
 is_voting = False
 custom_vote = False
+custom_counts = defaultdict(int)
 custom_opts = []
+custom = ""
+custom_topic = ""
 
 #
 # Initialization
@@ -120,16 +123,23 @@ def start_vote(msg):
         global votes
         global custom_opts
         global custom_vote
+        global custom
+        global custom_topic
 
         print("received: " + str(msg))
 
         is_voting = True
         if msg['custom'] == "true":
             custom_vote = True
-            topic = msg['topic']
+            custom_topic = msg['topic']
             custom_opts = msg['options'].splitlines()
+            custom = msg['custom']
 
-            emit('vote_start', {'custom': msg['custom'], 'options': custom_opts, 'topic': topic}, namespace='/vote', broadcast=True)
+            emit('vote_start', {'custom': custom, 'options': custom_opts, 'topic': custom_topic}, namespace='/vote', broadcast=True)
+
+            for key in custom_opts:
+                custom_counts[custom_opts] = 0;
+
         else:
             current_name = msg['name']
             current_abstain = msg['abstain']
@@ -173,21 +183,30 @@ def function(vote):
     global has_voted
     global not_voted
 
+    print("Msg sub_vote is: " + str(vote))
+
     if cas.username in has_voted:
         return
 
     has_voted.add(cas.username)
-    votes[vote['bid']][current_name] += 1
+
     votes_cast = 0
     votes_left = 0
 
-    for key in votes:
-        votes_cast += votes[key][current_name]
+    if custom_vote:
+        print("votes is ", custom_vote)
+        custom_vote[vote['bid']] += 1
+        for key in custom_vote:
+            votes_cast += custom_vote[key]
+    else:
+        print("votes is ", votes)
+        print("current_name = " + current_name)
+        print("current_abstain = " + current_abstain)
+        votes[vote['bid']][current_name] += 1
+        for key in votes:
+            votes_cast += votes[key][current_name]
 
     votes_left = len(clients) - votes_cast
-    print("votes is ", votes)
-    print("current_name = " + current_name)
-    print("current_abstain = " + current_abstain)
     emit('vote_submitted', {'name':id_map[cas.username], 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
 
 @socketio.on('connect', namespace='/vote')
@@ -200,7 +219,10 @@ def socket_attach():
     print('is_voting = ' + str(is_voting))
     if is_voting:
         print("Emitting vote_start to client connected after voting has started")
-        emit('vote_start', {'name': current_name, 'abstain': current_abstain})
+        if custom_vote:
+            emit('vote_start', {'custom': custom, 'options': custom_opts, 'topic': custom_topic})
+        else:
+            emit('vote_start', {'name': current_name, 'abstain': current_abstain})
 
 @socketio.on('disconnect', namespace='/vote')
 def socket_detach():
