@@ -194,9 +194,9 @@ def function(vote):
 
     if custom_vote:
         print("votes is ", custom_vote)
-        custom_vote[vote['bid']] += 1
-        for key in custom_vote:
-            votes_cast += custom_vote[key]
+        custom_counts[vote['bid']] += 1
+        for key in custom_counts:
+            votes_cast += custom_counts[key]
     else:
         print("votes is ", votes)
         print("current_name = " + current_name)
