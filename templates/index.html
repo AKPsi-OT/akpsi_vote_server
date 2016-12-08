@@ -67,9 +67,17 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
                     $('form#cast').submit(function(event){
                         console.log("submitted vote");
                         dots.play(true);
+                        var name = "";
+
+                        for(var j = 0; j < msg.options.length; i++){
+                            var id = 'a' + j;
+                            if($('#' + id).is(':checked')){
+                                name = $('#' + id).val();
+                            }
+                        }
 
                         msg = {}
-                        msg.bid = $("input[name='bid']:checked").val()
+                        msg.bid = name;
                         console.log('Voting for: ' + bid);
 
                         socket.emit('submit_vote', msg);
