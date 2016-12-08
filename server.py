@@ -127,8 +127,9 @@ def start_vote(msg):
         if msg['custom'] == "true":
             custom_vote = True
             topic = msg['topic']
-            options = msg['options']
-            emit('vote_start', {'custom': msg['custom'], 'options': options, 'topic': topic}, namespace='/vote', broadcast=True)
+            custom_opts = msg['options'].splitlines()
+
+            emit('vote_start', {'custom': msg['custom'], 'options': custom_opts, 'topic': topic}, namespace='/vote', broadcast=True)
         else:
             current_name = msg['name']
             current_abstain = msg['abstain']
