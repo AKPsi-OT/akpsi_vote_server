@@ -138,7 +138,7 @@ def start_vote(msg):
             emit('vote_start', {'custom': custom, 'options': custom_opts, 'topic': custom_topic}, namespace='/vote', broadcast=True)
 
             for key in custom_opts:
-                custom_counts[custom_opts] = 0;
+                custom_counts[key] = 0;
 
         else:
             current_name = msg['name']
