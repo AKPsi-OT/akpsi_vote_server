@@ -121,6 +121,8 @@ def start_vote(msg):
         global custom_opts
         global custom_vote
 
+        print("received: " + msg)
+
         is_voting = True
         if msg['custom'] == "true":
             custom_vote = True
