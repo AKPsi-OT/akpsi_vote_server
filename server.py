@@ -65,22 +65,33 @@ id_map = make_id_map()
 #
 
 def generate_vote_report():
-    report_fmt = ("<b>Vote Report: {}</b><br>"
-        "Yes: {:.2f}%<br>"
-        "No: {:.2f}%<br>"
-        "Abstain: {:.2f}%<br>"
-        "Bid? {}<br>")
-    yes = votes['yes'][current_name]
-    no = votes['no'][current_name]
-    abstain = votes['abstain'][current_name]
-    total  = yes + no + abstain
-    bid = ""
-    if (yes/total) >= BID_THRESHOLD:
-        bid = "YES"
+    if custom_vote:
+        total = 0
+        for key in custom_counts:
+            total += custom_counts[key]
+
+        report = ""
+        for key in custom_counts:
+            report += key + " " + str(custom_counts[key]) + ", " + str(custom_counts[key]/total) + "<br>"
+
+        return report
     else:
-        bid = "NO"
-    report = report_fmt.format(current_name, yes * 100/total, no * 100/total, abstain * 100/total, bid)
-    return report
+        report_fmt = ("<b>Vote Report: {}</b><br>"
+            "Yes: {:.2f}%<br>"
+            "No: {:.2f}%<br>"
+            "Abstain: {:.2f}%<br>"
+            "Bid? {}<br>")
+        yes = votes['yes'][current_name]
+        no = votes['no'][current_name]
+        abstain = votes['abstain'][current_name]
+        total  = yes + no + abstain
+        bid = ""
+        if (yes/total) >= BID_THRESHOLD:
+            bid = "YES"
+        else:
+            bid = "NO"
+        report = report_fmt.format(current_name, yes * 100/total, no * 100/total, abstain * 100/total, bid)
+        return report
 
 
 #
