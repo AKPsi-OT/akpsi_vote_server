@@ -51,7 +51,7 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
                 var html_form = "";
 
                 if(msg.custom == "true"){
-                    /*tml_form = '<h2>' + msg.topic + '</h2><form id="cast"><ul>'
+                    html_form = '<h2>' + msg.topic + '</h2><form id="cast"><ul>'
 
                     for(var i = 0; i < msg.options.length; i++){
                         var id = 'a' + i;
@@ -60,7 +60,7 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
 
                     html_form += '</ul><div class="centerdiv"><input value="Cast" type="submit" style="height: 50px; width: 100%; margin: 0 auto;" /></div></form>';
 
-                    target.innerHTML = html_form;*/
+                    target.innerHTML = html_form;
 
                     $('form#cast').submit(function(event){
                         console.log("submitted vote");
