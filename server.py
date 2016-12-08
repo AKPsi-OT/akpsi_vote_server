@@ -184,6 +184,7 @@ def function(vote):
     global not_voted
 
     print("Msg sub_vote is: " + str(vote))
+    print("has_voted = ", has_voted)
 
     if cas.username in has_voted:
         return
