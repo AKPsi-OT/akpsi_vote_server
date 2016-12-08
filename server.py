@@ -197,6 +197,7 @@ def function(vote):
         custom_counts[vote['bid']] += 1
         for key in custom_counts:
             votes_cast += custom_counts[key]
+        print("counts is ", custom_counts)
     else:
         print("votes is ", votes)
         print("current_name = " + current_name)
@@ -206,8 +207,8 @@ def function(vote):
             votes_cast += votes[key][current_name]
 
     votes_left = len(clients) - votes_cast
-    emit('vote_submitted', {'name':id_map[cas.username], 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
     has_voted.add(cas.username)
+    emit('vote_submitted', {'name':id_map[cas.username], 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
 
 @socketio.on('connect', namespace='/vote')
 def socket_attach():
