@@ -11,14 +11,12 @@ https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
 
         namespace = '/admin'; // change to an empty string
         var socket = io.connect(namespace);
-        var sub = document.getElementById("c2");
         socket.on('connect', function() {
         });
 
         $(document).ready(function(){
             socket.on('vote_submitted', function(msg){
                 console.log('Received vote submitted');
-                sub.innerHTML = '';
                 $('#c2').append(msg.name + " submitted their vote.<br>");
                 $('#c2').append("Votes Cast: <b>" + msg.votes_cast + "</b>, Votes Left: <b>" + msg.votes_left + "</b><br>");
             });
