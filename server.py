@@ -26,8 +26,7 @@ BID_THRESHOLD = 0.75
 
 ADMINS = set()
 ADMINS.add('cgonza1')
-ADMINS.add('tantony')
-ADMINS.add('jlewis10')
+ADMINS.add('alyubimo')
 
 has_voted = set()
 not_voted = set()
