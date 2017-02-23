@@ -28,6 +28,7 @@ ADMINS = set()
 ADMINS.add('cgonza1')
 ADMINS.add('alyubimo')
 ADMINS.add('mhudak')
+ADMINS.add('jgrossar')
 
 has_voted = set()
 not_voted = set()
