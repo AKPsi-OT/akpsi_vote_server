@@ -102,7 +102,10 @@ def generate_vote_report():
 @app.route('/')
 @login_required
 def index():
-        return render_template('index.html', username = cas.username)
+        if cas.username not in id_map:
+            return render_template('index.html', error = "denied")
+        else:
+            return render_template('index.html', username = cas.username)
 
 @app.route('/admin')
 @login_required
