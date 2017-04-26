@@ -103,7 +103,7 @@ def generate_vote_report():
 @login_required
 def index():
         if cas.username not in id_map:
-            return render_template('index.html', error = "denied")
+            return render_template('error.html', error = "denied")
         else:
             return render_template('index.html', username = cas.username)
 
