@@ -29,6 +29,7 @@ ADMINS.add('cgonza1')
 ADMINS.add('alyubimo')
 ADMINS.add('mhudak')
 ADMINS.add('jgrossar')
+ADMINS.add('jking111')
 
 has_voted = set()
 not_voted = set()
