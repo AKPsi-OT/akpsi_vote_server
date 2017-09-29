@@ -229,7 +229,7 @@ def function(vote):
 
     votes_left_perc = votes_left / clients
 
-    if(votes_left_perc < 0.15):
+    if(votes_left_perc < 0.12):
         print("votes left percent: " + votes_left_perc)
         query_not_voted()
 
