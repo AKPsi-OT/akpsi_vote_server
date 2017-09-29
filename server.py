@@ -226,10 +226,7 @@ def function(vote):
     has_voted.add(cas.username)
     emit('vote_submitted', {'name':id_map[cas.username], 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
 
-
-    votes_left_perc = votes_left / clients
-
-    if(votes_left_perc < 0.12):
+    if(votes_left < 10):
         print("votes left percent: " + votes_left_perc)
         query_not_voted()
 
