@@ -224,11 +224,14 @@ def function(vote):
 
     votes_left = len(clients) - votes_cast
     has_voted.add(cas.username)
-    emit('vote_submitted', {'name':id_map[cas.username], 'votes_cast': votes_cast, 'votes_left': votes_left}, namespace='/admin', broadcast=True)
 
-    if(votes_left < 10):
-        print("votes left percent: " + votes_left_perc)
-        query_not_voted()
+    if has_voted:
+        not_voted = clients - has_voted
+    else:
+        not_voted = clients
+    names = ', '.join([id_map[n] for n in not_voted])
+
+    emit('vote_submitted', {'name':id_map[cas.username], 'votes_cast': votes_cast, 'votes_left': votes_left, 'names': names}, namespace='/admin', broadcast=True)
 
 @socketio.on('connect', namespace='/vote')
 def socket_attach():
