@@ -29,6 +29,7 @@ ADMINS.add('cgonza1')
 ADMINS.add('amodm104')
 ADMINS.add('usanth')
 ADMINS.add('ashankar')
+ADMINS.add('jwang140')
 # Add VP membership, VP finance, and President IDs to ADMINS
 
 has_voted = set()
