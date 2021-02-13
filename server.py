@@ -56,7 +56,7 @@ def make_id_map():
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     map_path = os.path.join(SITE_ROOT, 'static', 'ids.csv')
     with open(map_path) as csvfile:
-        reader = csv.reader(open(map_path, "rb"))
+        reader = csv.reader(open(map_path, "rt"))
         for row in reader:
             temp[row[0]] = row[1]
     return temp
