@@ -1,4 +1,4 @@
 Flask
 Flask-SocketIO
-Flask-CAS
+Flask-CAS==1.0.2
 eventlet
