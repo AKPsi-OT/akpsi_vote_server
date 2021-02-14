@@ -144,6 +144,7 @@ def start_vote(msg):
         global custom_topic
 
         print("received: " + str(msg))
+        app.logger.debug("Received")
 
         is_voting = True
         if msg['custom'] == "true":
