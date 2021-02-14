@@ -144,7 +144,6 @@ def start_vote(msg):
         global custom_topic
 
         print("received: " + str(msg))
-        app.logger.debug("Received")
 
         is_voting = True
         if msg['custom'] == "true":
@@ -262,4 +261,4 @@ def socket_detach():
 
 if __name__ == "__main__":
     # Fetch the environment variable (so it works on Heroku):
-    socketio.run(app, host='0.0.0.0', port=int(os.environ.get("PORT", 33507)), debug=True)
+    socketio.run(app, host='0.0.0.0', port=int(os.environ.get("PORT", 33507)))
