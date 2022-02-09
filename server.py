@@ -29,7 +29,7 @@ ADMINS.add('cgonza1')
 ADMINS.add('aishwar')
 ADMINS.add('jzhao129')
 ADMINS.add('jhan0810')
-ADMINS.add('achoi31')
+ADMINS.add('vpatil1')
 ADMINS.add('hmutyala')
 # Add VP membership, VP finance, and President IDs to ADMINS
 
