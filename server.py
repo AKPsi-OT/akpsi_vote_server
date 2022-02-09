@@ -26,8 +26,8 @@ BID_THRESHOLD = 0.75
 
 ADMINS = set()
 ADMINS.add('cgonza1')
-ADMINS.add('aishwar')
-ADMINS.add('jzhao129')
+ADMINS.add('aleipold')
+ADMINS.add('cfeeley1')
 ADMINS.add('jhan0810')
 ADMINS.add('vpatil1')
 ADMINS.add('hmutyala')
