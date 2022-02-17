@@ -61,7 +61,7 @@ def make_id_map():
     with open(map_path) as csvfile:
         reader = csv.reader(open(map_path, "rt"))
         for row in reader:
-            temp[row[0]] = row[1]
+            temp[row[0].strip()] = row[1]
     return temp
 
 id_map = make_id_map()
