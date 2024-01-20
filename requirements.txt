@@ -1,4 +1,6 @@
 Flask == 2.1.3
+# werkzeug spec added
+Werkzeug==2.2.2
 Flask-SocketIO==5.3.6
 Flask-CAS==1.0.2
 eventlet
