@@ -29,9 +29,9 @@ BID_THRESHOLD = 0.75
 ADMINS = set()
 ADMINS.add('anjali17')
 ADMINS.add('rtiwari1')
-ADMINS.add('dnejad')
-ADMINS.add('abagchi')
-ADMINS.add('mathur')
+ADMINS.add('eileenc')
+ADMINS.add('anshvis')
+ADMINS.add('adong')
 # Add VP membership, VP finance, and President IDs to ADMINS
 
 has_voted = set()
