@@ -30,7 +30,7 @@ ADMINS = set()
 ADMINS.add('srichma3')
 ADMINS.add('dsamuel2')
 ADMINS.add('asreeram')
-ADMINS.add('anshvis')
+ADMINS.add('ahagstr1')
 ADMINS.add('adong')
 ADMINS.add('mathur')
 # Add VP membership, VP finance, and President IDs to ADMINS
