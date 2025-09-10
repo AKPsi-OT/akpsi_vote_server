@@ -2,9 +2,7 @@
 
 body, html{
   height: 100%;
-  background: url("AKPSI-ot.jpeg") no-repeat center center;
-  background-size: 400px 400px; 
-  background-color: white;
+  background: #FFFFFF;
   font-family: 'Lato', sans-serif;
 }
 
