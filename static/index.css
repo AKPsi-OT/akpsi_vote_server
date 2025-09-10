@@ -102,33 +102,7 @@ ul li .check::before {
 .centerdiv{
   text-align: center;
 }
-/* Voting buttons */
-input[type=submit] {
-  background: #0288D1;               /* main blue color */
-  color: white;                       /* button text */
-  font-size: 20px;                     /* text size */
-  font-family: 'Lato', sans-serif;     /* font */
-  border: none;                        /* remove default border */
-  border-radius: 12px;                 /* rounded corners */
-  padding: 12px 25px;                  /* top/bottom and left/right padding */
-  cursor: pointer;                     /* pointer on hover */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* subtle shadow */
-  transition: background 0.3s, transform 0.2s, box-shadow 0.2s; /* smooth effects */
-}
 
-/* Hover effect */
-input[type=submit]:hover {
-  background: #0277BD;                 /* slightly darker blue */
-  transform: scale(1.05);              /* grow slightly */
-  box-shadow: 0 6px 10px rgba(0,0,0,0.25); /* slightly bigger shadow */
-}
-
-/* Pressed/active effect */
-input[type=submit]:active {
-  background: #01579B;                 /* dark blue when pressed */
-  transform: scale(0.98);              /* shrink slightly */
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2); /* smaller shadow */
-/*
 input[type=submit]{
   background: #fff;
   font-size: 20px;
@@ -139,7 +113,7 @@ input[type=submit]:active{
   color: #757575;
   background: #eee;
 }
-*/
+
 input[type=radio]:checked ~ .check {
   border: 5px solid #0288D1;
 }
