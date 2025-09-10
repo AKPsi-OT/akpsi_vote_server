@@ -14,14 +14,10 @@ body, html{
   display: block;
   position: fixed;
   margin: auto;
-  height: 600px;
-  width: 600px;
+  height: 450px;
+  width: 450px;
   bottom: 0; left:0; right: 0; top:0;
-  /*padding: 0;*/
-  padding: 20px;                
-  border: 3px solid #1e88e5;    
-  border-radius: 12px;           
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15); 
+  padding: 0;
 }
 
 h2 {
