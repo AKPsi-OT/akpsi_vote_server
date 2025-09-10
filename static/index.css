@@ -2,7 +2,7 @@
 
 body, html{
   height: 100%;
-  background: url("static/AKPSI-ot.jpeg") no-repeat center center fixed;
+  background: url("AKPSI-ot.jpeg") no-repeat center center fixed;
   background-size: cover;
   font-family: 'Lato', sans-serif;
 }
