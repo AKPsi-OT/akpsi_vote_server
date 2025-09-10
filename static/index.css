@@ -102,7 +102,31 @@ ul li .check::before {
 .centerdiv{
   text-align: center;
 }
+input[type=submit] {
+  background: linear-gradient(135deg, #42a5f5, #1e88e5);
+  color: white;
+  font-size: 20px;
+  font-family: 'Lato', sans-serif;
+  padding: 12px 30px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
+input[type=submit]:hover {
+  background: linear-gradient(135deg, #1e88e5, #42a5f5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
+
+input[type=submit]:active {
+  background: #1976d2;
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+/*
 input[type=submit]{
   background: #fff;
   font-size: 20px;
@@ -113,7 +137,7 @@ input[type=submit]:active{
   color: #757575;
   background: #eee;
 }
-
+*/
 input[type=radio]:checked ~ .check {
   border: 5px solid #0288D1;
 }
