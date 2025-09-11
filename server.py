@@ -67,6 +67,23 @@ def make_id_map():
 id_map = make_id_map()
 
 #
+#Candidates 
+#
+
+def load_candidates():
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    cand_path = os.path.join(SITE_ROOT, 'static', 'candidates.csv')
+    candidates = []
+    with open(cand_path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            candidates.append(row['name'].strip())
+    return candidates
+
+candidates = load_candidates()
+current_index = -1
+
+#
 # Utility functions
 #
 
@@ -181,7 +198,38 @@ def end_vote():
             print("Report is: " + report)
             emit('vote_report', {'report': report}, namespace='/admin', broadcast=True)
             emit('vote_end', namespace='/vote', broadcast=True)
+            
+@socketio.on('start_next_candidate', namespace='/admin')
+def start_next_candidate(msg):
+    global has_voted, not_voted, is_voting
+    global current_name, current_abstain, votes, current_index
 
+    if cas.username not in ADMINS:
+        return
+
+    has_voted.clear()
+    not_voted.clear()
+    is_voting = True
+
+    # Advance to the next candidate
+    current_index += 1
+    if current_index >= len(candidates):
+        emit('vote_report', {'report': "All candidates have been voted on."}, namespace='/admin', broadcast=True)
+        return
+
+    current_name = candidates[current_index]
+    current_abstain = msg.get('abstain', 'Abstain')  # default abstain option
+
+    # Reset tallies for this candidate
+    for key in votes:
+        votes[key][current_name] = 0
+
+    emit('vote_start', {
+        'custom': "false",
+        'name': current_name,
+        'abstain': current_abstain
+    }, namespace='/vote', broadcast=True)
+    
 @socketio.on('get_not_voted', namespace='/admin')
 def query_not_voted():
     global not_voted
