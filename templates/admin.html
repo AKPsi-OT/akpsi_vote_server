@@ -62,7 +62,37 @@
                 socket.emit('get_not_voted');
                 return false;
             })
+            // -----------------------------
+            // CSV Upload + Next Candidate JS
+            // -----------------------------
+            $('form#upload_csv').submit(function(event){
+                event.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: '/upload_csv',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data){
+                        alert(data);
+                    },
+                    error: function(err){
+                        alert("Error uploading CSV.");
+                    }
+                });
+            });
 
+            $('#next_candidate').click(function() {
+                $.get('/next_candidate', function(data) {
+                    if(data === "No more candidates"){
+                        alert("No more candidates in the list.");
+                    } else {
+                        $('#name').val(data);  // fill the Rush Name input
+                    }
+                });
+            });
+            // -----------------------------
             // Catch window closing event and send a socket disconnect event
             window.onbeforeunload = function(){
                 socket.emit('disconnect_req');
@@ -106,14 +136,23 @@
                     <form id="names">
                         <input type="submit" value="Get Not Voted">
                     </form>
-                    <!-- CSV Upload Form -->
+                    <!-- -----------------------------
+                         CSV Upload Form
+                         ----------------------------- -->
                     <hr><br>
                     <form id="upload_csv" enctype="multipart/form-data" method="post">
                         <label><b>Bulk Upload Candidates (upload <code>candidates.csv</code>)</b></label><br>
                         <input type="file" name="file" accept=".csv" required><br><br>
                         <input type="submit" value="Upload CSV">
                     </form>
-                    <!--end-->
+
+                    <!-- -----------------------------
+                         Next Candidate Button
+                         ----------------------------- -->
+                    <button id="next_candidate" type="button">Next Candidate</button>
+                    <br><br>
+                    <!-- ----------------------------- -->
+
                 </div>
 
                 <div id="c2" style="width: 33%; display: table-cell;overflow-y: scroll;"></div>
