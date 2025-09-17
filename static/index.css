@@ -149,3 +149,38 @@ input[type=radio]:checked ~ .check::before{
 input[type=radio]:checked ~ label{
   color: #0288D1;
 }
+/* Admin CSV Upload Form Styling */
+form#upload_csv input[type="file"] {
+    font-size: 16px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+form#upload_csv input[type="submit"] {
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    color: white;
+    font-size: 18px;
+    font-family: 'Lato', sans-serif;
+    padding: 10px 25px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+form#upload_csv input[type="submit"]:hover {
+    background: linear-gradient(135deg, #1e88e5, #42a5f5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
+
+form#upload_csv input[type="submit"]:active {
+    background: #1976d2;
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
