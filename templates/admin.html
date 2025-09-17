@@ -106,6 +106,14 @@
                     <form id="names">
                         <input type="submit" value="Get Not Voted">
                     </form>
+                    <!-- CSV Upload Form -->
+                    <hr><br>
+                    <form id="upload_csv" enctype="multipart/form-data" method="post">
+                        <label><b>Bulk Upload Candidates (upload <code>candidates.csv</code>)</b></label><br>
+                        <input type="file" name="file" accept=".csv" required><br><br>
+                        <input type="submit" value="Upload CSV">
+                    </form>
+                    <!--end-->
                 </div>
 
                 <div id="c2" style="width: 33%; display: table-cell;overflow-y: scroll;"></div>
