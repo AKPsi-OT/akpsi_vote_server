@@ -142,17 +142,22 @@ def upload_csv():
     global candidate_queue
     global candidate_index
 
-    candidate_index = 0
-    candidate_queue = []
-
     file = request.files.get('file')
     if not file or not file.filename.endswith('.csv'):
         return "Invalid file", 400
 
     content = file.read().decode("utf-8")
     candidate_queue = [line.strip() for line in content.splitlines() if line.strip()]
+    candidate_index = 0  # reset index
 
-    return f"Successfully uploaded {len(candidate_queue)} candidates.", 200
+    first_candidate = ""
+    if candidate_queue:
+        first_candidate = candidate_queue[0]  # do not increment index here
+
+    return jsonify({
+        "message": f"Successfully uploaded {len(candidate_queue)} candidates.",
+        "first_candidate": first_candidate
+    })
 # -----------------------------
 # Serve next candidate
 # -----------------------------
