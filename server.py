@@ -124,7 +124,34 @@ def admin_panel():
         return render_template('error.html', error="denied")
     else:
         return render_template('admin.html')
+#upload        
+@app.route('/upload_csv', methods=['POST'])
+@login_required
+def upload_csv():
+    global candidate_list, candidate_index
+    candidate_index = 0  # reset pointer
+    candidate_list = []
 
+    file = request.files.get('file')
+    if not file or not file.filename.endswith('.csv'):
+        return "Invalid file", 400
+
+    stream = file.stream.read().decode("utf-8").splitlines()
+    for line in stream:
+        if line.strip():  # skip empty lines
+            candidate_list.append(line.strip())
+
+    return f"CSV uploaded successfully ({len(candidate_list)} candidates)", 200
+#next candidate
+@app.route('/next_candidate', methods=['GET'])
+def next_candidate():
+    global candidate_index
+    if candidate_index >= len(candidate_list):
+        return "No more candidates", 200
+
+    next_name = candidate_list[candidate_index]
+    candidate_index += 1
+    return next_name, 200
 #
 # Admin socket context functions
 #
