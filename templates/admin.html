@@ -76,6 +76,12 @@
                     processData: false,
                     success: function(data){
                         alert(data);
+                        // -----------------------------
+                        // Populate first candidate automatically
+                        // -----------------------------
+                        $.get('/next_candidate', function(first){
+                            $('#name').val(first);
+                        });
                     },
                     error: function(err){
                         alert("Error uploading CSV.");
