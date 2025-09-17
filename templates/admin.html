@@ -65,29 +65,30 @@
             // -----------------------------
             // CSV Upload + Next Candidate JS
             // -----------------------------
-            $('form#upload_csv').submit(function(event){
-                event.preventDefault();
-                var formData = new FormData(this);
-                $.ajax({
-                    url: '/upload_csv',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(data){
-                        alert(data);
-                        // -----------------------------
-                        // Populate first candidate automatically
-                        // -----------------------------
-                        $.get('/next_candidate', function(first){
-                            $('#name').val(first);
-                        });
-                    },
-                    error: function(err){
-                        alert("Error uploading CSV.");
-                    }
-                });
+$('form#upload_csv input[type="file"]').on('change', function(event){
+    var formData = new FormData();
+    formData.append('file', this.files[0]);
+
+    $.ajax({
+        url: '/upload_csv',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data){
+            alert(data);
+            // Immediately fetch first candidate
+            $.get('/next_candidate', function(first){
+                if(first !== "No more candidates"){
+                    $('#name').val(first);
+                }
             });
+        },
+        error: function(err){
+            alert("Error uploading CSV.");
+        }
+    });
+});
 
             $('#next_candidate').click(function() {
                 $.get('/next_candidate', function(data) {
@@ -142,16 +143,6 @@
                     <form id="names">
                         <input type="submit" value="Get Not Voted">
                     </form>
-                    <!-- -----------------------------
-                         CSV Upload Form
-                         ----------------------------- -->
-                    <hr><br>
-                    <form id="upload_csv" enctype="multipart/form-data" method="post">
-                        <label><b>Bulk Upload Candidates (upload <code>candidates.csv</code>)</b></label><br>
-                        <input type="file" name="file" accept=".csv" required><br><br>
-                        <input type="submit" value="Upload CSV">
-                    </form>
-
                     <!-- -----------------------------
                          Next Candidate Button
                          ----------------------------- -->
