@@ -13,6 +13,15 @@ from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, disconnect
 from flask_cas import CAS, login, logout, login_required
 
+#insert new imports
+from flask import jsonify
+
+# -----------------------------
+# Candidate CSV Queue
+# -----------------------------
+candidate_queue = []
+candidate_index = 0
+
 app = Flask(__name__)
 
 socketio = SocketIO(app)
@@ -124,34 +133,39 @@ def admin_panel():
         return render_template('error.html', error="denied")
     else:
         return render_template('admin.html')
-#upload        
+# -----------------------------
+# Upload candidates CSV
+# -----------------------------
 @app.route('/upload_csv', methods=['POST'])
 @login_required
 def upload_csv():
-    global candidate_list, candidate_index
-    candidate_index = 0  # reset pointer
-    candidate_list = []
+    global candidate_queue
+    global candidate_index
+
+    candidate_index = 0
+    candidate_queue = []
 
     file = request.files.get('file')
     if not file or not file.filename.endswith('.csv'):
         return "Invalid file", 400
 
-    stream = file.stream.read().decode("utf-8").splitlines()
-    for line in stream:
-        if line.strip():  # skip empty lines
-            candidate_list.append(line.strip())
+    content = file.read().decode("utf-8")
+    candidate_queue = [line.strip() for line in content.splitlines() if line.strip()]
 
-    return f"CSV uploaded successfully ({len(candidate_list)} candidates)", 200
-#next candidate
+    return f"Successfully uploaded {len(candidate_queue)} candidates.", 200
+# -----------------------------
+# Serve next candidate
+# -----------------------------
 @app.route('/next_candidate', methods=['GET'])
+@login_required
 def next_candidate():
     global candidate_index
-    if candidate_index >= len(candidate_list):
+    if candidate_index >= len(candidate_queue):
         return "No more candidates", 200
 
-    next_name = candidate_list[candidate_index]
+    name = candidate_queue[candidate_index]
     candidate_index += 1
-    return next_name, 200
+    return name, 200
 #
 # Admin socket context functions
 #
