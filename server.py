@@ -125,65 +125,6 @@ def admin_panel():
         return render_template('error.html', error="denied")
     else:
         return render_template('admin.html')
-        
-# -----------------------------
-# NEW: List Voting Routes
-# -----------------------------
-@app.route('/upload_candidate_list', methods=['POST'])
-@login_required
-def upload_candidate_list():
-    global candidate_list
-    
-    if cas.username not in ADMINS:
-        return "Access denied", 403
-    
-    file = request.files.get('file')
-    if not file or not file.filename.endswith('.csv'):
-        return jsonify({"error": "Invalid file"}), 400
-
-    content = file.read().decode("utf-8")
-    candidate_list = [line.strip() for line in content.splitlines() if line.strip()]
-    
-    return jsonify({
-        "message": f"Successfully uploaded {len(candidate_list)} candidates.",
-        "candidates": candidate_list
-    })
-
-@app.route('/get_candidate_list', methods=['GET'])
-@login_required
-def get_candidate_list():
-    if cas.username not in ADMINS:
-        return "Access denied", 403
-    
-    return jsonify({
-        "candidates": candidate_list
-    })
-
-@app.route('/start_vote_on_candidate', methods=['POST'])
-@login_required
-def start_vote_on_candidate():
-    global current_name, is_voting, has_voted, not_voted, votes
-    
-    if cas.username not in ADMINS:
-        return "Access denied", 403
-    
-    data = request.get_json()
-    candidate_name = data.get('candidate_name')
-    
-    if not candidate_name:
-        return jsonify({"error": "No candidate name provided"}), 400
-    
-    # Start voting on this candidate
-    current_name = candidate_name
-    has_voted.clear()
-    not_voted.clear()
-    is_voting = True
-    
-    # Initialize vote counts
-    for key in votes:
-        votes[key][current_name] = 0
-    
-    return jsonify({"message": f"Started voting on {candidate_name}"})
 #
 # Admin socket context functions
 #
@@ -233,34 +174,6 @@ def start_vote(msg):
             for key in votes:
                 votes[key][current_name] = 0
             emit('vote_start', {'custom': msg['custom'], 'name': current_name, 'abstain': current_abstain}, namespace='/vote', broadcast=True)
-
-# NEW: Socket event for list voting
-@socketio.on('start_list_vote', namespace='/admin')
-def start_list_vote(msg):
-    if cas.username in ADMINS:
-        has_voted.clear()
-        not_voted.clear()
-        global is_voting
-        global current_name
-        global current_abstain
-        global votes
-
-        current_name = msg['name']
-        current_abstain = msg.get('abstain', 'true')  # Default to allowing abstain
-        is_voting = True
-
-        print("Starting list vote for: " + current_name)
-        
-        # Initialize vote counts
-        for key in votes:
-            votes[key][current_name] = 0
-        
-        # Broadcast to all voters
-        emit('vote_start', {
-            'custom': 'false',
-            'name': current_name, 
-            'abstain': current_abstain
-        }, namespace='/vote', broadcast=True)
         
 @socketio.on('end_vote', namespace='/admin')
 def end_vote():
