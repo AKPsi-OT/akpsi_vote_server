@@ -62,64 +62,7 @@
                 socket.emit('get_not_voted');
                 return false;
             })
-
-            // ============================================
-            // 🚀 ADD NEW JAVASCRIPT HERE (LOCATION #1)
-            // ============================================
             
-            // List Voting JavaScript
-            $('#upload_list_csv').on('change', function(event){
-                var formData = new FormData();
-                formData.append('file', this.files[0]);
-
-                $.ajax({
-                    url: '/upload_candidate_list',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(data){
-                        $('#list_status').html('<strong>Status:</strong> ' + data.message);
-                        displayCandidateList(data.candidates);
-                    },
-                    error: function(xhr){
-                        alert("Error uploading candidate list: " + xhr.responseText);
-                    }
-                });
-            });
-
-            function displayCandidateList(candidates) {
-                var html = '<h4>Click a name to start voting:</h4><div class="candidate-grid">';
-                
-                candidates.forEach(function(candidate, index) {
-                    html += '<button class="candidate-btn" onclick="startVoteOnCandidate(\'' + 
-                           candidate + '\')">' + candidate + '</button>';
-                });
-                
-                html += '</div>';
-                $('#candidate_list_display').html(html);
-            }
-
-            window.startVoteOnCandidate = function(candidateName) {
-                $('#c2').append("<br><b>LIST VOTE:</b> Starting vote on " + candidateName + "<br>");
-                
-                socket.emit('start_list_vote', {
-                    'name': candidateName,
-                    'abstain': 'true'
-                });
-            }
-
-            // Load existing candidate list on page load
-            $.get('/get_candidate_list', function(data) {
-                if (data.candidates && data.candidates.length > 0) {
-                    $('#list_status').html('<strong>Status:</strong> ' + data.candidates.length + ' candidates loaded');
-                    displayCandidateList(data.candidates);
-                }
-            });
-
-            // ============================================
-            // END OF NEW JAVASCRIPT
-            // ============================================
             // -----------------------------
             // Catch window closing event and send a socket disconnect event
             window.onbeforeunload = function(){
@@ -127,61 +70,6 @@
             }
         });
     </script>
-    <!-- ============================================ -->
-    <!-- 🚀 ADD NEW CSS HERE (LOCATION #2) -->
-    <!-- ============================================ -->
-    <style>
-        .list-voting-section {
-            background-color: #f0f8ff;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 2px solid #4169E1;
-        }
-        .list-voting-section h3 {
-            color: #1e3a8a;
-            margin-top: 0;
-        }
-        .candidate-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        .candidate-btn {
-            background: #4169E1;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 14px;
-        }
-        .candidate-btn:hover {
-            background: #1e40af;
-            transform: translateY(-1px);
-        }
-        .candidate-btn:active {
-            background: #1e3a8a;
-            transform: translateY(0);
-        }
-        #upload_list_csv {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        #list_status {
-            color: #1e3a8a;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-    </style>
-    <!-- ============================================ -->
-    <!-- END OF NEW CSS -->
-    <!-- ============================================ -->
-
 </head>
 <body>
     <div id="wrapper">
@@ -192,25 +80,6 @@
         <div style="width: 100%; display: table;">
             <div style="display: table-row">
                 <div id="c1" style="width: 33%; display: table-cell;">
-                    <!-- ============================================ -->
-                    <!-- 🚀 ADD NEW HTML HERE (LOCATION #3) -->
-                    <!-- ============================================ -->
-                    <div class="list-voting-section">
-                        <h3>📋 List Voting</h3>
-                        <p>Upload a CSV and click any name to start voting:</p>
-                        
-                        <input type="file" id="upload_list_csv" accept=".csv">
-                        <div id="list_status">Status: No candidates loaded</div>
-                        
-                        <div id="candidate_list_display">
-                            <!-- Candidate buttons will appear here -->
-                        </div>
-                    </div>
-                    
-                    <hr>
-                    <!-- ============================================ -->
-                    <!-- END OF NEW HTML -->
-                    <!-- ============================================ -->
                     <form id="start">
                         <label><b>Vote Type</b></label><br>
                         <label><input type="radio" name="custom" value="true">Custom Vote</label>
