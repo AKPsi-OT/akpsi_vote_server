@@ -33,6 +33,9 @@ app.config['CAS_AFTER_LOGIN'] = 'index'
 BID_THRESHOLD = 0.75
 
 ADMINS = set()
+ADMINS.add('dpeechar')
+#Add Hashem
+#Add Jason
 ADMINS.add('srichma3')
 ADMINS.add('dsamuel2')
 ADMINS.add('asreeram')
