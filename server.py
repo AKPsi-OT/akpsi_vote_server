@@ -34,6 +34,7 @@ BID_THRESHOLD = 0.75
 
 ADMINS = set()
 ADMINS.add('dpeechar')
+ADMINS.add('jjia0731')
 ADMINS.add('halomar')
 ADMINS.add('srichma3')
 ADMINS.add('dsamuel2')
